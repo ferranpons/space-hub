@@ -50,10 +50,10 @@ public interface IssTrackingApiInterface {
 
 	class IssPosition {
 		@SerializedName("latitude")
-		double latitude;
+		public double latitude;
 
 		@SerializedName("longitude")
-		double longitude;
+		public double longitude;
 	}
 
 	class PassTimesResponse {

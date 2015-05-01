@@ -9,13 +9,18 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import com.ferranpons.issposition.issTracking.IssTrackingApi;
 import com.ferranpons.issposition.issTracking.IssTrackingApiInterface;
 import com.ferranpons.issposition.issTracking.IssTrackingInteractor;
@@ -42,6 +47,13 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		setUpViews();
+		issTrackingPresenter = new IssTrackingPresenter(new IssTrackingInteractor(IssTrackingApi.getIssTrackingApi("http://api.open-notify.org")));
+		issTrackingPresenter.start(this);
+		setUpMapIfNeeded();
+	}
+
+	private void setUpViews() {
 		peopleInSpaceListView = (ListView) findViewById(R.id.peopleInSpaceListView);
 		peopleInSpaceProgressBar = (ProgressBar) findViewById(R.id.progressPeopleInSpace);
 		peopleInSpaceCollapseButton = (ImageView) findViewById(R.id.collapsePeople);
@@ -54,14 +66,6 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 				flipPeopleInSpaceCollapseButton();
 			}
 		});
-		issTrackingPresenter = new IssTrackingPresenter(new IssTrackingInteractor(IssTrackingApi.getIssTrackingApi("http://api.open-notify.org")));
-		issTrackingPresenter.start(this);
-		setUpMapIfNeeded();
-	}
-
-	private void flipPeopleInSpaceCollapseButton() {
-		Bitmap bitmap = ((BitmapDrawable)peopleInSpaceCollapseButton.getDrawable()).getBitmap();
-		peopleInSpaceCollapseButton.setImageBitmap(flipVertical(bitmap));
 	}
 
 	@Override protected void onResume() {
@@ -72,12 +76,41 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 	}
 
 	private void setUpMapIfNeeded() {
+		Location location = getLocation();
 		if (map == null) {
 			map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(
 				R.id.map)).getMap();
-			if (map != null) {
-				setUpMap();
+			if (map != null && location != null) {
+				issTrackingPresenter.retrievePassTimes(location.getLatitude(), location.getLongitude());
+				setUpMap(location);
 			}
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.about:
+				FragmentManager fm = getSupportFragmentManager();
+				AboutFragment aboutDialog = new AboutFragment();
+				aboutDialog.show(fm, "fragment_edit_name");
+				return true;
+			case R.id.refreshPassTimes:
+				issTrackingPresenter.retrieveCurrentPosition();
+				Location location = getLocation();
+				if (location != null) {
+					issTrackingPresenter.retrievePassTimes(location.getLatitude(), location.getLongitude());
+				}
+				return true;
+			default:
+				return true;
 		}
 	}
 
@@ -87,28 +120,24 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 		super.onDestroy();
 	}
 
-	private void setUpMap() {
+	private void setUpMap(Location location) {
+		map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+			new LatLng(location.getLatitude(), location.getLongitude()), 13));
+		CameraPosition cameraPosition = new CameraPosition.Builder()
+			.target(new LatLng(location.getLatitude(), location.getLongitude()))
+			.zoom(5)
+			.bearing(0)
+			.tilt(40)
+			.build();
+		map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+		map.addMarker(new MarkerOptions().position(
+			new LatLng(location.getLatitude(), location.getLongitude())).title("Marker"));
+	}
+
+	private Location getLocation() {
 		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
-
-		Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-		if (location != null)
-		{
-			map.animateCamera(CameraUpdateFactory.newLatLngZoom(
-				new LatLng(location.getLatitude(), location.getLongitude()), 13));
-
-			CameraPosition cameraPosition = new CameraPosition.Builder()
-				.target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
-				.zoom(5)                   // Sets the zoom
-				.bearing(0)                // Sets the orientation of the camera to east
-				.tilt(40)                   // Sets the tilt of the camera to 30 degrees
-				.build();                   // Creates a CameraPosition from the builder
-			map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-			map.addMarker(new MarkerOptions().position(
-				new LatLng(location.getLatitude(), location.getLongitude())).title("Marker"));
-			issTrackingPresenter.retrievePassTimes(location.getLatitude(), location.getLongitude());
-		}
-		//map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+		return locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
 	}
 
 	@Override
@@ -117,23 +146,25 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 	}
 
 	@Override
-	public void didRetrieveCurrentPosition() {
-		Log.d("***CURRENT_POSITION", "didRetrieveCurrentPosition");
-	}
-
-	@Override
-	public void showNetworkError() {
-		Log.d("***CURRENT_POSITION", "NETWORK ERROR");
-	}
-
-	@Override
 	public void setIssPosition(IssTrackingApiInterface.IssPosition position) {
-		Log.d("***CURRENT_POSITION", "SET ISS POSITION");
+		if (map != null) {
+			map.addMarker(new MarkerOptions().position(
+				new LatLng(position.latitude, position.longitude)).title("Marker"));
+		}
+	}
+
+	@Override public void didRetrieveCurrentPosition() {
+		Log.d("***CURRENT_POSITION", "didRetrieveCurrentPosition");
 	}
 
 	@Override
 	public void willRetrievePassTimes() {
 		Log.d("***CURRENT_POSITION", "willRetrievePassTimes");
+	}
+
+	@Override
+	public void showPassTimes(ArrayList<IssTrackingApiInterface.PassTime> passTimes) {
+		Log.d("***CURRENT_POSITION", "SHOW PASS TIMES");
 	}
 
 	@Override
@@ -143,25 +174,28 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 
 	@Override
 	public void willRetrievePeopleInSpace() {
-		Log.d("***CURRENT_POSITION", "willRetrievePeopleInSpace");
 		peopleInSpaceProgressBar.setVisibility(View.VISIBLE);
-	}
-
-	@Override
-	public void didRetrievePeopleInSpace() {
-		Log.d("***CURRENT_POSITION", "didRetrievePeopleInSpace");
-		peopleInSpaceProgressBar.setVisibility(View.GONE);
-	}
-
-	@Override
-	public void showPassTimes(ArrayList<IssTrackingApiInterface.PassTime> passTimes) {
-		Log.d("***CURRENT_POSITION", "SHOW PASS TIMES");
 	}
 
 	@Override
 	public void showPeopleInSpace(ArrayList<IssTrackingApiInterface.Person> people) {
 		ListAdapter peopleAdapter = new PeopleAdapter(getApplicationContext(), people);
 		peopleInSpaceListView.setAdapter(peopleAdapter);
+	}
+
+	@Override
+	public void didRetrievePeopleInSpace() {
+		peopleInSpaceProgressBar.setVisibility(View.GONE);
+	}
+
+	@Override
+	public void showNetworkError() {
+		Toast.makeText(getBaseContext(), R.string.toast_network_error, Toast.LENGTH_SHORT).show();
+	}
+
+	private void flipPeopleInSpaceCollapseButton() {
+		Bitmap bitmap = ((BitmapDrawable)peopleInSpaceCollapseButton.getDrawable()).getBitmap();
+		peopleInSpaceCollapseButton.setImageBitmap(flipVertical(bitmap));
 	}
 
 	public Bitmap flipVertical(Bitmap src) {

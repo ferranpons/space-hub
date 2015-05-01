@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="266dp"
+	android:layout_height="wrap_content"
+	android:padding="12dp">
+
+	<ImageView
+		android:id="@+id/issImage"
+		android:layout_width="254dp"
+		android:layout_height="200dp"
+		android:src="@drawable/iss"
+		android:contentDescription="@string/about_iss_image_description" />
+
+	<TextView
+		android:id="@+id/developedBy"
+		android:layout_marginTop="8dp"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/about_developed_by"
+		android:textSize="12sp"/>
+
+	<TextView
+		android:id="@+id/developer"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/my_name" />
+
+	<TextView
+		android:layout_width="254dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="16dp"
+		android:text="@string/about_project_description" />
+
+	<TextView
+		android:id="@+id/projectUrl"
+		android:layout_width="254dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="16dp"
+		android:text="@string/about_project_url" />
+</LinearLayout>

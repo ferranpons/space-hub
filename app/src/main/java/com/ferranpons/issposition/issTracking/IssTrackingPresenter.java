@@ -1,5 +1,7 @@
 package com.ferranpons.issposition.issTracking;
 
+import java.util.concurrent.TimeUnit;
+import rx.Observable;
 import rx.Scheduler;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -11,7 +13,9 @@ public class IssTrackingPresenter implements IssTrackingPresenterInterface {
 	private Subscription currentPositionSubscription;
 	private Subscription passTimesSubscription;
 	private Subscription peopleInSpaceSubscription;
+	private Subscription timerSubscription;
 	private final Scheduler scheduler;
+	private final Observable<Long> timer = Observable.timer(60, 60, TimeUnit.SECONDS);
 
 	public IssTrackingPresenter(IssTrackingInteractorInterface issTrackingInteractorInterface) {
 		this(issTrackingInteractorInterface, AndroidSchedulers.mainThread());
@@ -36,7 +40,13 @@ public class IssTrackingPresenter implements IssTrackingPresenterInterface {
 			.subscribe(
 				currentPositionResponse -> view.setIssPosition(currentPositionResponse.position)
 				, throwable -> view.showNetworkError()
-				, view::didRetrieveCurrentPosition
+				, () -> {
+					view.didRetrieveCurrentPosition();
+					if (timerSubscription == null || timerSubscription.isUnsubscribed()) {
+						timerSubscription = timer.observeOn(scheduler)
+							.subscribe((numberOfTimes) -> retrieveCurrentPosition());
+					}
+				}
 			);
 	}
 
@@ -75,6 +85,9 @@ public class IssTrackingPresenter implements IssTrackingPresenterInterface {
 		}
 		if (peopleInSpaceSubscription != null) {
 			peopleInSpaceSubscription.unsubscribe();
+		}
+		if (timerSubscription != null) {
+			timerSubscription.unsubscribe();
 		}
 	}
 }

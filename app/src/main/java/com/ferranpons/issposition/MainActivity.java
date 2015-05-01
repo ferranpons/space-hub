@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -31,6 +32,7 @@ import com.ferranpons.issposition.peopleInSpace.PeopleAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 	private GoogleMap map;
 	private IssTrackingPresenterInterface issTrackingPresenter;
 	private ProgressBar peopleInSpaceProgressBar;
-	private ImageView peopleInSpaceCollapseButton;
+	private ImageView peopleInSpaceCollapseImage;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,13 +52,17 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 		setUpViews();
 		issTrackingPresenter = new IssTrackingPresenter(new IssTrackingInteractor(IssTrackingApi.getIssTrackingApi("http://api.open-notify.org")));
 		issTrackingPresenter.start(this);
+		issTrackingPresenter.retrieveCurrentPosition();
+		issTrackingPresenter.retrievePeopleInSpace();
 		setUpMapIfNeeded();
 	}
 
 	private void setUpViews() {
 		peopleInSpaceListView = (ListView) findViewById(R.id.peopleInSpaceListView);
 		peopleInSpaceProgressBar = (ProgressBar) findViewById(R.id.progressPeopleInSpace);
-		peopleInSpaceCollapseButton = (ImageView) findViewById(R.id.collapsePeople);
+		peopleInSpaceCollapseImage = (ImageView) findViewById(R.id.collapsePeople);
+		LinearLayout peopleInSpaceCollapseButton = (LinearLayout) findViewById(R.id.collapseLayout);
+		flipPeopleInSpaceCollapseButton();
 		peopleInSpaceCollapseButton.setOnClickListener(view -> {
 			if (peopleInSpaceListView.getVisibility() == View.VISIBLE) {
 				peopleInSpaceListView.setVisibility(View.GONE);
@@ -71,8 +77,6 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 	@Override protected void onResume() {
 		super.onResume();
 		setUpMapIfNeeded();
-		issTrackingPresenter.retrieveCurrentPosition();
-		issTrackingPresenter.retrievePeopleInSpace();
 	}
 
 	private void setUpMapIfNeeded() {
@@ -103,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 				aboutDialog.show(fm, "fragment_edit_name");
 				return true;
 			case R.id.refreshPassTimes:
-				issTrackingPresenter.retrieveCurrentPosition();
 				Location location = getLocation();
 				if (location != null) {
 					issTrackingPresenter.retrievePassTimes(location.getLatitude(), location.getLongitude());
@@ -148,8 +151,9 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 	@Override
 	public void setIssPosition(IssTrackingApiInterface.IssPosition position) {
 		if (map != null) {
-			map.addMarker(new MarkerOptions().position(
-				new LatLng(position.latitude, position.longitude)).title("Marker"));
+			map.addMarker(new MarkerOptions()
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.iss_marker))
+				.position(new LatLng(position.latitude, position.longitude)).title("Marker"));
 		}
 	}
 
@@ -194,11 +198,11 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 	}
 
 	private void flipPeopleInSpaceCollapseButton() {
-		Bitmap bitmap = ((BitmapDrawable)peopleInSpaceCollapseButton.getDrawable()).getBitmap();
-		peopleInSpaceCollapseButton.setImageBitmap(flipVertical(bitmap));
+		Bitmap bitmap = ((BitmapDrawable) peopleInSpaceCollapseImage.getDrawable()).getBitmap();
+		peopleInSpaceCollapseImage.setImageBitmap(flipVertical(bitmap));
 	}
 
-	public Bitmap flipVertical(Bitmap src) {
+	private Bitmap flipVertical(Bitmap src) {
 		Matrix matrix = new Matrix();
 		matrix.preScale(1.0f, -1.0f);
 		return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);

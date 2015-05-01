@@ -22,6 +22,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import com.ferranpons.issposition.issTracking.IssTrackingApi;
 import com.ferranpons.issposition.issTracking.IssTrackingApiInterface;
 import com.ferranpons.issposition.issTracking.IssTrackingInteractor;
@@ -40,16 +43,27 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements IssTrackingViewInterface {
 
-	private ListView peopleInSpaceListView;
 	private GoogleMap map;
 	private IssTrackingPresenterInterface issTrackingPresenter;
-	private ProgressBar peopleInSpaceProgressBar;
-	private ImageView peopleInSpaceCollapseImage;
 
-	@Override protected void onCreate(Bundle savedInstanceState) {
+	@InjectView(R.id.peopleInSpaceListView)
+	public ListView peopleInSpaceListView;
+
+	@InjectView(R.id.progressPeopleInSpace)
+	public ProgressBar peopleInSpaceProgressBar;
+
+	@InjectView(R.id.collapsePeople)
+	public ImageView peopleInSpaceCollapseImage;
+
+	@InjectView(R.id.collapseLayout)
+	public LinearLayout peopleInSpaceCollapseButton;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		setUpViews();
+		ButterKnife.inject(this);
+		flipPeopleInSpaceCollapseButton();
 		issTrackingPresenter = new IssTrackingPresenter(new IssTrackingInteractor(IssTrackingApi.getIssTrackingApi("http://api.open-notify.org")));
 		issTrackingPresenter.start(this);
 		issTrackingPresenter.retrieveCurrentPosition();
@@ -57,24 +71,19 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 		setUpMapIfNeeded();
 	}
 
-	private void setUpViews() {
-		peopleInSpaceListView = (ListView) findViewById(R.id.peopleInSpaceListView);
-		peopleInSpaceProgressBar = (ProgressBar) findViewById(R.id.progressPeopleInSpace);
-		peopleInSpaceCollapseImage = (ImageView) findViewById(R.id.collapsePeople);
-		LinearLayout peopleInSpaceCollapseButton = (LinearLayout) findViewById(R.id.collapseLayout);
-		flipPeopleInSpaceCollapseButton();
-		peopleInSpaceCollapseButton.setOnClickListener(view -> {
-			if (peopleInSpaceListView.getVisibility() == View.VISIBLE) {
-				peopleInSpaceListView.setVisibility(View.GONE);
-				flipPeopleInSpaceCollapseButton();
-			} else {
-				peopleInSpaceListView.setVisibility(View.VISIBLE);
-				flipPeopleInSpaceCollapseButton();
-			}
-		});
+	@OnClick(R.id.collapseLayout)
+	public void collapsePeopleInSpaceView() {
+		if (peopleInSpaceListView.getVisibility() == View.VISIBLE) {
+			peopleInSpaceListView.setVisibility(View.GONE);
+			flipPeopleInSpaceCollapseButton();
+		} else {
+			peopleInSpaceListView.setVisibility(View.VISIBLE);
+			flipPeopleInSpaceCollapseButton();
+		}
 	}
 
-	@Override protected void onResume() {
+	@Override
+	protected void onResume() {
 		super.onResume();
 		setUpMapIfNeeded();
 	}

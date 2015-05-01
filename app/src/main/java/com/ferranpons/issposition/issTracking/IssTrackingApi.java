@@ -7,7 +7,6 @@ public class IssTrackingApi {
 		RestAdapter restAdapter =
 			new RestAdapter.Builder()
 				.setEndpoint(endPoint)
-				.setLogLevel(RestAdapter.LogLevel.FULL)
 				.build();
 
 		return restAdapter.create(IssTrackingApiInterface.class);

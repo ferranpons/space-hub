@@ -31,10 +31,10 @@ public interface IssTrackingApiInterface {
 
 	class Person {
 		@SerializedName("name")
-		String name;
+		public String name;
 
 		@SerializedName("craft")
-		String spaceCraft;
+		public String spaceCraft;
 	}
 
 	class CurrentPositionResponse {

@@ -1,16 +1,17 @@
 package com.ferranpons.issposition;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import com.samsung.android.sdk.imagefilter.SifImageFilter;
+import com.samsung.android.sdk.SsdkUnsupportedException;
+import com.samsung.android.sdk.gesture.Sgesture;
+import com.samsung.android.sdk.gesture.SgestureHand;
 
 public class AboutFragment extends DialogFragment {
 
@@ -22,6 +23,15 @@ public class AboutFragment extends DialogFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+
+		try {
+			Sgesture mGesture = new Sgesture();
+			mGesture.initialize(getActivity().getApplicationContext());
+			SgestureHand mGestureHand = new SgestureHand(Looper.getMainLooper(), mGesture);
+			mGestureHand.start(0, changeListener);
+		} catch (IllegalArgumentException | SsdkUnsupportedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -29,8 +39,6 @@ public class AboutFragment extends DialogFragment {
 		Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_about, container);
 		TextView projectUrl = (TextView) view.findViewById(R.id.projectUrl);
-		ImageView issImage = (ImageView) view.findViewById(R.id.issImage);
-		filterImage(issImage);
 		projectUrl.setOnClickListener(view1 -> {
 			if (getActivity() != null) {
 				Intent intent =
@@ -41,20 +49,7 @@ public class AboutFragment extends DialogFragment {
 		return view;
 	}
 
-	private void filterImage(ImageView issImage) {
-		try {
-			Bitmap newBitmap = filterBitmap(issImage);
-			if (newBitmap != null) {
-				issImage.setImageBitmap(newBitmap);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private Bitmap filterBitmap(ImageView issImage) {
-		Bitmap bitmap = ((BitmapDrawable) issImage.getDrawable()).getBitmap();
-		return SifImageFilter.filterImageCopy(bitmap, SifImageFilter.FILTER_CLASSIC,
-			SifImageFilter.LEVEL_MEDIUM);
-	}
+	private SgestureHand.ChangeListener changeListener = info -> {
+		dismiss();
+	};
 }

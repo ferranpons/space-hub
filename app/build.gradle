@@ -48,6 +48,6 @@ dependencies {
 	compile 'io.reactivex:rxandroid:0.24.0'
 	compile 'com.squareup.retrofit:retrofit:1.9.0'
 	compile 'com.jakewharton:butterknife:5.1.2'
-	compile files('libs/imagefilter-v1.0.1.jar')
+	compile files('libs/gesture-v2.0.3.jar')
 	compile files('libs/sdk-v1.0.0.jar')
 }

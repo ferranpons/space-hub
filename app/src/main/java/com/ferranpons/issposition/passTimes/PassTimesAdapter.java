@@ -1,4 +1,4 @@
-package com.ferranpons.issposition.peopleInSpace;
+package com.ferranpons.issposition.passTimes;
 
 import android.content.Context;
 import android.view.View;
@@ -9,21 +9,20 @@ import com.ferranpons.issposition.R;
 import com.ferranpons.issposition.issTracking.IssTrackingApiInterface;
 import java.util.ArrayList;
 
-public class PeopleAdapter extends ArrayAdapter<IssTrackingApiInterface.Person> {
+public class PassTimesAdapter extends ArrayAdapter<IssTrackingApiInterface.PassTime> {
 
-	public PeopleAdapter(Context context, ArrayList<IssTrackingApiInterface.Person> people) {
-		super(context, R.layout.row_person, people);
+	public PassTimesAdapter(Context context, ArrayList<IssTrackingApiInterface.PassTime> passTimes) {
+		super(context, R.layout.row_pass_time, passTimes);
 	}
 
 	public class ViewHolder {
-		TextView name;
+		TextView riseTime;
+		TextView duration;
 
-		TextView spaceCraft;
 		public ViewHolder(View view) {
-			name = (TextView) view.findViewById(R.id.name);
-			spaceCraft = (TextView) view.findViewById(R.id.spaceCraft);
+			riseTime = (TextView) view.findViewById(R.id.riseTime);
+			duration = (TextView) view.findViewById(R.id.duration);
 		}
-
 	}
 
 	@Override
@@ -36,10 +35,9 @@ public class PeopleAdapter extends ArrayAdapter<IssTrackingApiInterface.Person> 
 		} else {
 			holder = (ViewHolder) view.getTag();
 		}
-		final IssTrackingApiInterface.Person person = getItem(position);
-		holder.name.setText(person.name);
-		holder.spaceCraft.setText(person.spaceCraft);
+		final IssTrackingApiInterface.PassTime passTime = getItem(position);
+		holder.riseTime.setText(String.valueOf(passTime.riseTime));
+		holder.duration.setText(passTime.duration);
 		return view;
 	}
-
 }

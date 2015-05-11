@@ -17,5 +17,34 @@
 		android:orientation="vertical">
 
 		<include layout="@layout/card_people_in_space"/>
+		<include layout="@layout/card_pass_times"/>
+
+		<!--
+		<FrameLayout
+			android:id="@+id/passTimesLayer"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom"
+			android:orientation="vertical"
+			android:background="@color/white">
+
+			<ListView
+				android:id="@+id/passTimesListView"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:divider="@null"
+				android:dividerHeight="0dp"
+				android:visibility="gone" />
+
+			<ProgressBar
+				android:id="@+id/progressPassTimes"
+				style="?android:attr/progressBarStyle"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center|center_vertical"
+				android:gravity="center|center_vertical"
+				android:visibility="gone" />
+		</FrameLayout>
+		-->
 	</LinearLayout>
 </FrameLayout>

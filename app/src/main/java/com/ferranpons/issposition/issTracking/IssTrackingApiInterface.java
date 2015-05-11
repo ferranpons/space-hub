@@ -86,9 +86,9 @@ public interface IssTrackingApiInterface {
 
 	class PassTime {
 		@SerializedName("risetime")
-		long riseTime;
+		public long riseTime;
 
 		@SerializedName("duration")
-		int duration;
+		public int duration;
 	}
 }

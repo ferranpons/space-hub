@@ -31,6 +31,7 @@ import com.ferranpons.issposition.issTracking.IssTrackingInteractor;
 import com.ferranpons.issposition.issTracking.IssTrackingPresenter;
 import com.ferranpons.issposition.issTracking.IssTrackingPresenterInterface;
 import com.ferranpons.issposition.issTracking.IssTrackingViewInterface;
+import com.ferranpons.issposition.passTimes.PassTimesAdapter;
 import com.ferranpons.issposition.peopleInSpace.PeopleAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -55,8 +56,26 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 	@InjectView(R.id.collapsePeople)
 	public ImageView peopleInSpaceCollapseImage;
 
+	@InjectView(R.id.retryPeople)
+	public ImageView peopleInSpaceRetryImage;
+
 	@InjectView(R.id.collapseLayout)
 	public LinearLayout peopleInSpaceCollapseButton;
+
+	@InjectView(R.id.passTimesListView)
+	public ListView passTimesListView;
+
+	@InjectView(R.id.progressPassTimes)
+	public ProgressBar passTimesProgressBar;
+
+	@InjectView(R.id.collapsePassTimesLayout)
+	public LinearLayout passTimesCollapseButton;
+
+	@InjectView(R.id.collapsePassTimes)
+	public ImageView passTimesCollapseImage;
+
+	@InjectView(R.id.retryPassTimes)
+	public ImageView passTimesRetryImage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +84,7 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 		ButterKnife.inject(this);
 		flipPeopleInSpaceCollapseButton();
 		issTrackingPresenter = new IssTrackingPresenter(new IssTrackingInteractor(IssTrackingApi.getIssTrackingApi("http://api.open-notify.org")));
-		issTrackingPresenter.start(this);
-		issTrackingPresenter.retrieveCurrentPosition();
-		issTrackingPresenter.retrievePeopleInSpace();
+		issTrackingPresenter.setView(this);
 		setUpMapIfNeeded();
 	}
 
@@ -82,10 +99,28 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 		}
 	}
 
+	@OnClick(R.id.collapsePassTimesLayout)
+	public void collapsePassTimesView() {
+		if (passTimesListView.getVisibility() == View.VISIBLE) {
+			passTimesListView.setVisibility(View.GONE);
+			flipPassTimesCollapseButton();
+		} else {
+			passTimesListView.setVisibility(View.VISIBLE);
+			flipPassTimesCollapseButton();
+		}
+	}
+
+	@OnClick(R.id.retryPeople)
+	public void retryRetrievePeopleInSpace() {
+		issTrackingPresenter.retrievePeopleInSpace();
+	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		setUpMapIfNeeded();
+		issTrackingPresenter.retrieveCurrentPosition();
+		issTrackingPresenter.retrievePeopleInSpace();
 	}
 
 	private void setUpMapIfNeeded() {
@@ -96,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 			if (map != null && location != null) {
 				issTrackingPresenter.retrievePassTimes(location.getLatitude(), location.getLongitude());
 				setUpMap(location);
+			} else {
+				showPassTimesError();
 			}
 		}
 	}
@@ -115,11 +152,8 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 				AboutFragment aboutDialog = new AboutFragment();
 				aboutDialog.show(fm, "fragment_edit_name");
 				return true;
-			case R.id.refreshPassTimes:
-				Location location = getLocation();
-				if (location != null) {
-					issTrackingPresenter.retrievePassTimes(location.getLatitude(), location.getLongitude());
-				}
+			case R.id.refreshCurrentPosition:
+				issTrackingPresenter.retrieveCurrentPosition();
 				return true;
 			default:
 				return true;
@@ -153,11 +187,6 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 	}
 
 	@Override
-	public void willRetrieveCurrentPosition() {
-		Log.d("***CURRENT_POSITION", "willRetrieveCurrentPosition");
-	}
-
-	@Override
 	public void setIssPosition(IssTrackingApiInterface.IssPosition position) {
 		if (map != null) {
 			map.addMarker(new MarkerOptions()
@@ -166,28 +195,36 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 		}
 	}
 
-	@Override public void didRetrieveCurrentPosition() {
-		Log.d("***CURRENT_POSITION", "didRetrieveCurrentPosition");
-	}
-
 	@Override
 	public void willRetrievePassTimes() {
-		Log.d("***CURRENT_POSITION", "willRetrievePassTimes");
+		passTimesProgressBar.setVisibility(View.VISIBLE);
+		passTimesCollapseImage.setVisibility(View.GONE);
+		passTimesRetryImage.setVisibility(View.GONE);
 	}
 
 	@Override
 	public void showPassTimes(ArrayList<IssTrackingApiInterface.PassTime> passTimes) {
-		Log.d("***CURRENT_POSITION", "SHOW PASS TIMES");
+		ListAdapter passTimesAdapter = new PassTimesAdapter(getApplicationContext(), passTimes);
+		passTimesListView.setAdapter(passTimesAdapter);
 	}
 
 	@Override
 	public void didRetrievePassTimes() {
-		Log.d("***CURRENT_POSITION", "didRetrievePassTimes");
+		passTimesProgressBar.setVisibility(View.GONE);
+		passTimesCollapseImage.setVisibility(View.VISIBLE);
+	}
+
+	@Override public void showPassTimesError() {
+		passTimesProgressBar.setVisibility(View.GONE);
+		passTimesRetryImage.setVisibility(View.VISIBLE);
+		passTimesCollapseImage.setVisibility(View.GONE);
 	}
 
 	@Override
 	public void willRetrievePeopleInSpace() {
 		peopleInSpaceProgressBar.setVisibility(View.VISIBLE);
+		peopleInSpaceCollapseImage.setVisibility(View.GONE);
+		peopleInSpaceRetryImage.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -199,16 +236,28 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 	@Override
 	public void didRetrievePeopleInSpace() {
 		peopleInSpaceProgressBar.setVisibility(View.GONE);
+		peopleInSpaceCollapseImage.setVisibility(View.VISIBLE);
+	}
+
+	@Override public void showPeopleInSpaceError() {
+		peopleInSpaceProgressBar.setVisibility(View.GONE);
+		peopleInSpaceRetryImage.setVisibility(View.VISIBLE);
+		peopleInSpaceCollapseImage.setVisibility(View.GONE);
 	}
 
 	@Override
-	public void showNetworkError() {
+	public void showCurrentPositionError() {
 		Toast.makeText(getBaseContext(), R.string.toast_network_error, Toast.LENGTH_SHORT).show();
 	}
 
 	private void flipPeopleInSpaceCollapseButton() {
 		Bitmap bitmap = ((BitmapDrawable) peopleInSpaceCollapseImage.getDrawable()).getBitmap();
 		peopleInSpaceCollapseImage.setImageBitmap(flipVertical(bitmap));
+	}
+
+	private void flipPassTimesCollapseButton() {
+		Bitmap bitmap = ((BitmapDrawable) passTimesCollapseImage.getDrawable()).getBitmap();
+		passTimesCollapseImage.setImageBitmap(flipVertical(bitmap));
 	}
 
 	private Bitmap flipVertical(Bitmap src) {

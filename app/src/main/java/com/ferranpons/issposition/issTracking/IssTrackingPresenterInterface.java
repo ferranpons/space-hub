@@ -4,6 +4,6 @@ public interface IssTrackingPresenterInterface {
 	void retrieveCurrentPosition();
 	void retrievePassTimes(double latitude, double longitude);
 	void retrievePeopleInSpace();
-	void start(IssTrackingViewInterface view);
+	void setView(IssTrackingViewInterface view);
 	void stop();
 }

@@ -3,11 +3,12 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:card_view="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/peopleInSpaceCard"
+	android:id="@+id/passTimesCard"
 	android:layout_gravity="start"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:layout_margin="8dp"
+	android:layout_marginLeft="8dp"
+	android:layout_marginRight="8dp"
 	card_view:cardCornerRadius="6dp"
 	tools:showIn="@layout/activity_main">
 
@@ -15,44 +16,42 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
-		android:padding="8dp"
-		android:animateLayoutChanges="true">
+		android:padding="8dp">
 
 		<LinearLayout
-			android:id="@+id/collapseLayout"
+			android:id="@+id/collapsePassTimesLayout"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal">
 
 			<TextView
-				android:id="@+id/headerPeople"
+				android:id="@+id/headerPassTimes"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				android:text="@string/people_in_space_header"
+				android:text="@string/pass_times_header"
 				android:textSize="17sp"
 				android:textColor="#212121" />
 
 			<ProgressBar
-				android:id="@+id/progressPeopleInSpace"
+				android:id="@+id/progressPassTimes"
 				style="?android:attr/progressBarStyleSmall"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginRight="8dp"
 				android:layout_gravity="center|center_vertical"
 				android:gravity="center|center_vertical"
 				android:visibility="gone" />
 
 			<ImageView
-				android:id="@+id/collapsePeople"
+				android:id="@+id/collapsePassTimes"
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:layout_gravity="end"
-				android:contentDescription="@string/people_in_space_collapse_view_description"
+				android:contentDescription="@string/pass_times_collapse_view_description"
 				android:src="@drawable/ic_action_collapse_dark" />
 
 			<ImageView
-				android:id="@+id/retryPeople"
+				android:id="@+id/retryPassTimes"
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:layout_gravity="end"
@@ -61,13 +60,11 @@
 		</LinearLayout>
 
 		<ListView
-			android:id="@+id/peopleInSpaceListView"
+			android:id="@+id/passTimesListView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:divider="@null"
 			android:dividerHeight="0dp"
 			android:visibility="gone" />
-
-
 	</LinearLayout>
 </android.support.v7.widget.CardView>

@@ -28,20 +28,18 @@ public class IssTrackingPresenter implements IssTrackingPresenterInterface {
 	}
 
 	@Override
-	public void start(IssTrackingViewInterface view) {
+	public void setView(IssTrackingViewInterface view) {
 		this.view = view;
 	}
 
 	@Override
 	public void retrieveCurrentPosition() {
-		view.willRetrieveCurrentPosition();
 		currentPositionSubscription = issTrackingInteractorInterface.getCurrentPosition()
 			.observeOn(scheduler)
 			.subscribe(
 				currentPositionResponse -> view.setIssPosition(currentPositionResponse.position)
-				, throwable -> view.showNetworkError()
+				, throwable -> view.showCurrentPositionError()
 				, () -> {
-					view.didRetrieveCurrentPosition();
 					if (timerSubscription == null || timerSubscription.isUnsubscribed()) {
 						timerSubscription = timer.observeOn(scheduler)
 							.subscribe((numberOfTimes) -> retrieveCurrentPosition());
@@ -57,7 +55,7 @@ public class IssTrackingPresenter implements IssTrackingPresenterInterface {
 			.observeOn(scheduler)
 			.subscribe(
 				passTimesResponse -> view.showPassTimes(passTimesResponse.passTimes)
-				, throwable -> view.showNetworkError()
+				, throwable -> view.showPassTimesError()
 				, view::didRetrievePassTimes
 			);
 	}
@@ -69,7 +67,7 @@ public class IssTrackingPresenter implements IssTrackingPresenterInterface {
 			.observeOn(scheduler)
 			.subscribe(
 				peopleInSpaceResponse -> view.showPeopleInSpace(peopleInSpaceResponse.people)
-				, throwable -> view.showNetworkError()
+				, throwable -> view.showPeopleInSpaceError()
 				, view::didRetrievePeopleInSpace
 			);
 	}

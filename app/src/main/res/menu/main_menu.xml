@@ -7,7 +7,7 @@
 		android:title="@string/about"
 		app:showAsAction="ifRoom" />
 	<item
-		android:id="@+id/refreshPassTimes"
+		android:id="@+id/refreshCurrentPosition"
 		android:icon="@drawable/ic_action_refresh"
 		android:title="@string/refresh"
 		app:showAsAction="ifRoom" />

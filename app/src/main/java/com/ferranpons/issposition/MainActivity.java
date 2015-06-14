@@ -126,9 +126,7 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 	@Override
 	protected void onResume() {
 		super.onResume();
-		setUpMapIfNeeded();
-		issTrackingPresenter.retrieveCurrentPosition();
-		issTrackingPresenter.retrievePeopleInSpace();
+		loadContent();
 		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
 		if (status == ConnectionResult.SERVICE_MISSING) {
 			Toast.makeText(getBaseContext(), R.string.common_google_play_services_unsupported_text, Toast.LENGTH_SHORT).show();
@@ -136,6 +134,12 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 		connectivityChange = new ConnectivityChange();
 		registerReceiver(connectivityChange,
 			new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+	}
+
+	private void loadContent() {
+		setUpMapIfNeeded();
+		issTrackingPresenter.retrieveCurrentPosition();
+		issTrackingPresenter.retrievePeopleInSpace();
 	}
 
 	public void setUpMapIfNeeded() {
@@ -318,9 +322,7 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 			boolean isConnected = activeNetwork != null &&
 				activeNetwork.isConnectedOrConnecting();
 			if (isConnected) {
-				issTrackingPresenter.retrieveCurrentPosition();
-				issTrackingPresenter.retrievePeopleInSpace();
-				setUpMapIfNeeded();
+				loadContent();
 			}
 		}
 	}

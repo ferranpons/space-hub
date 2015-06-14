@@ -1,6 +1,9 @@
 package com.ferranpons.issposition;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
@@ -8,6 +11,8 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -78,13 +83,15 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 	@InjectView(R.id.retryPassTimes)
 	public ImageView passTimesRetryImage;
 
+	private ConnectivityChange connectivityChange;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		ButterKnife.inject(this);
 		flipPeopleInSpaceCollapseButton();
-		flipPeopleInSpaceCollapseButton();
+		flipPassTimesCollapseButton();
 		issTrackingPresenter = new IssTrackingPresenter(new IssTrackingInteractor(IssTrackingApi.getIssTrackingApi("http://api.open-notify.org")));
 		issTrackingPresenter.setView(this);
 	}
@@ -126,9 +133,12 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 		if (status == ConnectionResult.SERVICE_MISSING) {
 			Toast.makeText(getBaseContext(), R.string.common_google_play_services_unsupported_text, Toast.LENGTH_SHORT).show();
 		}
+		connectivityChange = new ConnectivityChange();
+		registerReceiver(connectivityChange,
+			new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 	}
 
-	private void setUpMapIfNeeded() {
+	public void setUpMapIfNeeded() {
 		try {
 			Location location = getLocation();
 			if (map == null) {
@@ -167,6 +177,12 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 			default:
 				return true;
 		}
+	}
+
+	@Override
+	protected void onPause() {
+		unregisterReceiver(connectivityChange);
+		super.onPause();
 	}
 
 	@Override
@@ -291,5 +307,21 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 		Matrix matrix = new Matrix();
 		matrix.preScale(1.0f, -1.0f);
 		return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
+	}
+
+	private class ConnectivityChange extends BroadcastReceiver {
+		@Override public void onReceive(Context context, Intent intent) {
+			ConnectivityManager cm =
+				(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+			NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+			boolean isConnected = activeNetwork != null &&
+				activeNetwork.isConnectedOrConnecting();
+			if (isConnected) {
+				issTrackingPresenter.retrieveCurrentPosition();
+				issTrackingPresenter.retrievePeopleInSpace();
+				setUpMapIfNeeded();
+			}
+		}
 	}
 }

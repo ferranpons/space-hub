@@ -17,8 +17,8 @@ public class PeopleAdapter extends ArrayAdapter<IssTrackingApiInterface.Person> 
 
 	public class ViewHolder {
 		TextView name;
-
 		TextView spaceCraft;
+
 		public ViewHolder(View view) {
 			name = (TextView) view.findViewById(R.id.name);
 			spaceCraft = (TextView) view.findViewById(R.id.spaceCraft);

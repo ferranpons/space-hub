@@ -26,6 +26,7 @@ project.properties
 .gradle/
 .metadata/
 *.iml
+*.jks
 
 */.DS_Store
 .DS_Store

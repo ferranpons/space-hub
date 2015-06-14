@@ -14,4 +14,5 @@
 	<string name="pass_times_header">Pass Times</string>
 	<string name="pass_times_collapse_view_description">pass times collapse image description</string>
 	<string name="people_in_space_retry_view_description">Retry Retrieve People In Space Image Description</string>
+	<string name="toast_map_error">Sorry but there is an error loading map.</string>
 </resources>

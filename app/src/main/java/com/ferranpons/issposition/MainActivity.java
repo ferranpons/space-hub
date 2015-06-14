@@ -6,12 +6,11 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,6 +32,8 @@ import com.ferranpons.issposition.issTracking.IssTrackingPresenterInterface;
 import com.ferranpons.issposition.issTracking.IssTrackingViewInterface;
 import com.ferranpons.issposition.passTimes.PassTimesAdapter;
 import com.ferranpons.issposition.peopleInSpace.PeopleAdapter;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -83,9 +84,9 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 		setContentView(R.layout.activity_main);
 		ButterKnife.inject(this);
 		flipPeopleInSpaceCollapseButton();
+		flipPeopleInSpaceCollapseButton();
 		issTrackingPresenter = new IssTrackingPresenter(new IssTrackingInteractor(IssTrackingApi.getIssTrackingApi("http://api.open-notify.org")));
 		issTrackingPresenter.setView(this);
-		setUpMapIfNeeded();
 	}
 
 	@OnClick(R.id.collapseLayout)
@@ -121,19 +122,27 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 		setUpMapIfNeeded();
 		issTrackingPresenter.retrieveCurrentPosition();
 		issTrackingPresenter.retrievePeopleInSpace();
+		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
+		if (status == ConnectionResult.SERVICE_MISSING) {
+			Toast.makeText(getBaseContext(), R.string.common_google_play_services_unsupported_text, Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	private void setUpMapIfNeeded() {
-		Location location = getLocation();
-		if (map == null) {
-			map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(
-				R.id.map)).getMap();
-			if (map != null && location != null) {
-				issTrackingPresenter.retrievePassTimes(location.getLatitude(), location.getLongitude());
-				setUpMap(location);
-			} else {
-				showPassTimesError();
+		try {
+			Location location = getLocation();
+			if (map == null) {
+				map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+				if (map != null && location != null) {
+					issTrackingPresenter.retrievePassTimes(location.getLatitude(), location.getLongitude());
+					setUpMap(location);
+				} else {
+					showPassTimesError();
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Toast.makeText(getBaseContext(), R.string.toast_network_error, Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -171,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 			new LatLng(location.getLatitude(), location.getLongitude()), 13));
 		CameraPosition cameraPosition = new CameraPosition.Builder()
 			.target(new LatLng(location.getLatitude(), location.getLongitude()))
-			.zoom(5)
+			.zoom(3)
 			.bearing(0)
 			.tilt(40)
 			.build();
@@ -183,6 +192,24 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 	private Location getLocation() {
 		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
+
+		// Define a listener that responds to location updates
+		LocationListener locationListener = new LocationListener() {
+			public void onLocationChanged(Location location) {
+				issTrackingPresenter.retrievePassTimes(location.getLatitude(), location.getLongitude());
+				setUpMap(location);
+			}
+
+			public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+			public void onProviderEnabled(String provider) {}
+
+			public void onProviderDisabled(String provider) {}
+		};
+
+		// Register the listener with the Location Manager to receive location updates
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+
 		return locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
 	}
 

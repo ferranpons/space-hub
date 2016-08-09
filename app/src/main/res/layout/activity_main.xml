@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
@@ -22,4 +22,4 @@
     <include layout="@layout/card_people_in_space"/>
     <include layout="@layout/card_pass_times"/>
   </LinearLayout>
-</FrameLayout>
+</merge>

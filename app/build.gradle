@@ -41,6 +41,10 @@ android {
     javaMaxHeapSize "4g"
     preDexLibraries = preDexEnabled && !travisBuild
   }
+
+  lintOptions {
+    disable 'IconMissingDensityFolder'
+  }
 }
 
 retrolambda {

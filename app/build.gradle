@@ -12,19 +12,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply from: '../quality.gradle'
 
-Properties props = new Properties()
-props.load(new FileInputStream(file("local.properties")))
-
 android {
-  signingConfigs {
-    config {
-      keyAlias 'ISSPosition-Release'
-      keyPassword props['keyPassword']
-      storeFile file('issposition-release.jks')
-      storePassword props['keystore.password']
-    }
-  }
-
   compileSdkVersion 24
   buildToolsVersion "24.0.1"
 
@@ -41,7 +29,6 @@ android {
     release {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-      signingConfig signingConfigs.config
     }
   }
 

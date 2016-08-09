@@ -2,16 +2,11 @@ package com.ferranpons.issposition;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.samsung.android.sdk.SsdkUnsupportedException;
-import com.samsung.android.sdk.gesture.Sgesture;
-import com.samsung.android.sdk.gesture.SgestureHand;
 
 public class AboutFragment extends DialogFragment {
 
@@ -23,15 +18,6 @@ public class AboutFragment extends DialogFragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-
-    try {
-      Sgesture mGesture = new Sgesture();
-      mGesture.initialize(getActivity().getApplicationContext());
-      SgestureHand mGestureHand = new SgestureHand(Looper.getMainLooper(), mGesture);
-      mGestureHand.start(0, changeListener);
-    } catch (IllegalArgumentException | SsdkUnsupportedException e) {
-      Log.d(AboutFragment.class.getName(), e.getMessage());
-    }
   }
 
   @Override
@@ -47,8 +33,4 @@ public class AboutFragment extends DialogFragment {
     });
     return view;
   }
-
-  private SgestureHand.ChangeListener changeListener = info -> {
-    dismiss();
-  };
 }

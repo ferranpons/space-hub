@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +15,7 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -53,35 +55,25 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 	private GoogleMap map;
 	private IssTrackingPresenterInterface issTrackingPresenter;
 
-	@InjectView(R.id.peopleInSpaceListView)
-	public ListView peopleInSpaceListView;
+	@InjectView(R.id.peopleInSpaceListView) public ListView peopleInSpaceListView;
 
-	@InjectView(R.id.progressPeopleInSpace)
-	public ProgressBar peopleInSpaceProgressBar;
+	@InjectView(R.id.progressPeopleInSpace) public ProgressBar peopleInSpaceProgressBar;
 
-	@InjectView(R.id.collapsePeople)
-	public ImageView peopleInSpaceCollapseImage;
+	@InjectView(R.id.collapsePeople) public ImageView peopleInSpaceCollapseImage;
 
-	@InjectView(R.id.retryPeople)
-	public ImageView peopleInSpaceRetryImage;
+	@InjectView(R.id.retryPeople) public ImageView peopleInSpaceRetryImage;
 
-	@InjectView(R.id.collapseLayout)
-	public LinearLayout peopleInSpaceCollapseButton;
+	@InjectView(R.id.collapseLayout) public LinearLayout peopleInSpaceCollapseButton;
 
-	@InjectView(R.id.passTimesListView)
-	public ListView passTimesListView;
+	@InjectView(R.id.passTimesListView) public ListView passTimesListView;
 
-	@InjectView(R.id.progressPassTimes)
-	public ProgressBar passTimesProgressBar;
+	@InjectView(R.id.progressPassTimes) public ProgressBar passTimesProgressBar;
 
-	@InjectView(R.id.collapsePassTimesLayout)
-	public LinearLayout passTimesCollapseButton;
+	@InjectView(R.id.collapsePassTimesLayout) public LinearLayout passTimesCollapseButton;
 
-	@InjectView(R.id.collapsePassTimes)
-	public ImageView passTimesCollapseImage;
+	@InjectView(R.id.collapsePassTimes) public ImageView passTimesCollapseImage;
 
-	@InjectView(R.id.retryPassTimes)
-	public ImageView passTimesRetryImage;
+	@InjectView(R.id.retryPassTimes) public ImageView passTimesRetryImage;
 
 	private ConnectivityChange connectivityChange;
 
@@ -132,8 +124,7 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 			Toast.makeText(getBaseContext(), R.string.common_google_play_services_unsupported_text, Toast.LENGTH_SHORT).show();
 		}
 		connectivityChange = new ConnectivityChange();
-		registerReceiver(connectivityChange,
-			new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+		registerReceiver(connectivityChange, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 	}
 
 	private void loadContent() {
@@ -146,13 +137,15 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 		try {
 			Location location = getLocation();
 			if (map == null) {
-				map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-				if (map != null && location != null) {
-					issTrackingPresenter.retrievePassTimes(location.getLatitude(), location.getLongitude());
-					setUpMap(location);
-				} else {
-					showPassTimesError();
-				}
+				((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(
+						googleMap -> {
+							if (map != null && location != null) {
+								issTrackingPresenter.retrievePassTimes(location.getLatitude(), location.getLongitude());
+								setUpMap(location);
+							} else {
+								showPassTimesError();
+							}
+						});
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -196,17 +189,12 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 	}
 
 	private void setUpMap(Location location) {
-		map.animateCamera(CameraUpdateFactory.newLatLngZoom(
-			new LatLng(location.getLatitude(), location.getLongitude()), 13));
-		CameraPosition cameraPosition = new CameraPosition.Builder()
-			.target(new LatLng(location.getLatitude(), location.getLongitude()))
-			.zoom(3)
-			.bearing(0)
-			.tilt(40)
-			.build();
+		map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
+		CameraPosition cameraPosition = new CameraPosition.Builder().target(
+				new LatLng(location.getLatitude(), location.getLongitude())).zoom(3).bearing(0).tilt(40).build();
 		map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-		map.addMarker(new MarkerOptions().position(
-			new LatLng(location.getLatitude(), location.getLongitude())).title("Marker"));
+		map.addMarker(
+				new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("Marker"));
 	}
 
 	private Location getLocation() {
@@ -220,15 +208,23 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
 				setUpMap(location);
 			}
 
-			public void onStatusChanged(String provider, int status, Bundle extras) {}
+			public void onStatusChanged(String provider, int status, Bundle extras) {
+			}
 
-			public void onProviderEnabled(String provider) {}
+			public void onProviderEnabled(String provider) {
+			}
 
-			public void onProviderDisabled(String provider) {}
+			public void onProviderDisabled(String provider) {
+			}
 		};
 
 		// Register the listener with the Location Manager to receive location updates
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+		if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+				!= PackageManager.PERMISSION_GRANTED
+				&& ActivityCompat.checkSelfPermission(this,
+				android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+		}
 
 		return locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
 	}

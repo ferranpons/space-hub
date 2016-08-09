@@ -3,7 +3,6 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath 'me.tatarka:gradle-retrolambda:2.4.1'
 	}
 }
 repositories {
@@ -11,7 +10,8 @@ repositories {
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'retrolambda'
+apply plugin: 'me.tatarka.retrolambda'
+//apply from: '../quality.gradle'
 
 Properties props = new Properties()
 props.load(new FileInputStream(file("local.properties")))
@@ -25,15 +25,19 @@ android {
 			storePassword props['keystore.password']
 		}
 	}
-	compileSdkVersion 22
-	buildToolsVersion "22.0.1"
+
+	compileSdkVersion 24
+	buildToolsVersion "24.0.1"
+
 	defaultConfig {
 		applicationId "com.ferranpons.issposition"
 		minSdkVersion 15
-		targetSdkVersion 22
-		versionCode 3
-		versionName "1.2"
+		targetSdkVersion 24
+		versionCode 4
+		versionName "2.0"
+		multiDexEnabled true
 	}
+
 	buildTypes {
 		release {
 			minifyEnabled false
@@ -41,20 +45,33 @@ android {
 			signingConfig signingConfigs.config
 		}
 	}
+
 	compileOptions {
 		sourceCompatibility JavaVersion.VERSION_1_8
 		targetCompatibility JavaVersion.VERSION_1_8
 	}
+
+	lintOptions {
+		abortOnError false
+	}
 }
+
 retrolambda {
 	javaVersion JavaVersion.VERSION_1_7
 }
+
 dependencies {
 	compile fileTree(dir: 'libs', include: ['*.jar'])
-	compile 'com.android.support:appcompat-v7:22.1.1'
-	compile 'com.android.support:cardview-v7:21.0.3'
-	compile 'com.android.support:recyclerview-v7:21.0.3'
-	compile 'com.google.android.gms:play-services:7.3.0'
+
+	compile 'com.android.support:multidex:1.0.1'
+
+	def supportLibraryVersion = '24.1.1'
+	compile "com.android.support:appcompat-v7:$supportLibraryVersion"
+	compile "com.android.support:cardview-v7:$supportLibraryVersion"
+	compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
+
+	compile 'com.google.android.gms:play-services:9.4.0'
+
 	compile 'com.squareup.okhttp:okhttp:2.2.0'
 	compile 'io.reactivex:rxandroid:0.24.0'
 	compile 'com.squareup.retrofit:retrofit:1.9.0'

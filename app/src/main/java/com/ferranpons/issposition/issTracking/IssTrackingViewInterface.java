@@ -1,6 +1,6 @@
 package com.ferranpons.issposition.issTracking;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface IssTrackingViewInterface {
 
@@ -20,9 +20,9 @@ public interface IssTrackingViewInterface {
 
   void showPeopleInSpaceError();
 
-  void showPassTimes(ArrayList<IssTrackingApiInterface.PassTime> passTimes);
+  void showPassTimes(List<IssTrackingApiInterface.PassTime> passTimes);
 
-  void showPeopleInSpace(ArrayList<IssTrackingApiInterface.Person> people);
+  void showPeopleInSpace(List<IssTrackingApiInterface.Person> people);
 
   class NullView implements IssTrackingViewInterface {
 
@@ -67,12 +67,12 @@ public interface IssTrackingViewInterface {
     }
 
     @Override
-    public void showPassTimes(ArrayList<IssTrackingApiInterface.PassTime> passTimes) {
+    public void showPassTimes(List<IssTrackingApiInterface.PassTime> passTimes) {
 
     }
 
     @Override
-    public void showPeopleInSpace(ArrayList<IssTrackingApiInterface.Person> people) {
+    public void showPeopleInSpace(List<IssTrackingApiInterface.Person> people) {
 
     }
   }

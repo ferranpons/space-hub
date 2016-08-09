@@ -48,7 +48,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements IssTrackingViewInterface {
 
@@ -136,23 +136,18 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
   }
 
   public void setUpMapIfNeeded() {
-    try {
-      Location location = getLocation();
-      if (map == null) {
-        ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(
-            googleMap -> {
-              if (map != null && location != null) {
-                issTrackingPresenter.retrievePassTimes(location.getLatitude(),
-                    location.getLongitude());
-                setUpMap(location);
-              } else {
-                showPassTimesError();
-              }
-            });
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-      Toast.makeText(getBaseContext(), R.string.toast_network_error, Toast.LENGTH_SHORT).show();
+    Location location = getLocation();
+    if (map == null) {
+      ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(
+          googleMap -> {
+            if (map != null && location != null) {
+              issTrackingPresenter.retrievePassTimes(location.getLatitude(),
+                  location.getLongitude());
+              setUpMap(location);
+            } else {
+              showPassTimesError();
+            }
+          });
     }
   }
 
@@ -257,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
   }
 
   @Override
-  public void showPassTimes(ArrayList<IssTrackingApiInterface.PassTime> passTimes) {
+  public void showPassTimes(List<IssTrackingApiInterface.PassTime> passTimes) {
     ListAdapter passTimesAdapter = new PassTimesAdapter(getApplicationContext(), passTimes);
     passTimesListView.setAdapter(passTimesAdapter);
   }
@@ -283,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
   }
 
   @Override
-  public void showPeopleInSpace(ArrayList<IssTrackingApiInterface.Person> people) {
+  public void showPeopleInSpace(List<IssTrackingApiInterface.Person> people) {
     ListAdapter peopleAdapter = new PeopleAdapter(getApplicationContext(), people);
     peopleInSpaceListView.setAdapter(peopleAdapter);
   }

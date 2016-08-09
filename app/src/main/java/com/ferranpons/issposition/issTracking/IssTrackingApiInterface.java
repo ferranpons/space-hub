@@ -1,7 +1,7 @@
 package com.ferranpons.issposition.issTracking;
 
 import com.google.gson.annotations.SerializedName;
-import java.util.ArrayList;
+import java.util.List;
 import retrofit.http.GET;
 import retrofit.http.Query;
 import rx.Observable;
@@ -22,7 +22,7 @@ public interface IssTrackingApiInterface {
 
     @SerializedName("number") int number;
 
-    @SerializedName("people") ArrayList<Person> people;
+    @SerializedName("people") List<Person> people;
   }
 
   class Person {
@@ -50,7 +50,7 @@ public interface IssTrackingApiInterface {
 
     @SerializedName("request") RequestPassTimes request;
 
-    @SerializedName("response") ArrayList<PassTime> passTimes;
+    @SerializedName("response") List<PassTime> passTimes;
   }
 
   class RequestPassTimes {

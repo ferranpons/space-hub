@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class AboutFragment extends DialogFragment {
       SgestureHand mGestureHand = new SgestureHand(Looper.getMainLooper(), mGesture);
       mGestureHand.start(0, changeListener);
     } catch (IllegalArgumentException | SsdkUnsupportedException e) {
-      e.printStackTrace();
+      Log.d(AboutFragment.class.getName(), e.getMessage());
     }
   }
 

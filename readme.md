@@ -1,7 +1,7 @@
 International Space Station Position Tracker
 ============================================
 
-<img src="app/src/main/res/drawable/iss.png" align="left" width="168px" height="168px"/>
+<img src="app/src/main/res/drawable-nodpi/iss.png" align="left" width="168px" height="168px"/>
 <img align="left" width="0" height="168px" hspace="10"/>
 
 *Android Architecture using MVP + RxJava + Retrolambda + Retrofit*

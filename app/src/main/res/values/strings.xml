@@ -1,18 +1,17 @@
 <resources>
-	<string name="app_name">ISS Position</string>
-	<string name="title_activity_main">ISS Position</string>
-	<string name="people_in_space_header">People In Space</string>
-	<string name="people_in_space_collapse_view_description">People In Space Collapse View</string>
-	<string name="refresh">refresh</string>
-	<string name="toast_network_error">Sorry but there is a Connection Error. Please try again.</string>
-	<string name="about">about</string>
-	<string name="about_developed_by">Developed by</string>
-	<string name="my_name"><b>Ferran Pons</b>\n<i>@ponsaffair</i></string>
-	<string name="about_project_description">This is app was created to show how to develop clean Android applications using the Model-View-Presenter pattern with RxJava, Retrolambda and Retrofit.</string>
-	<string name="about_project_url"><a href="https://github.com/ferranponsscmspain/iss-position">https://github.com/ferranponsscmspain/iss-position</a></string>
-	<string name="about_iss_image_description">ISS Image</string>
-	<string name="pass_times_header">Pass Times</string>
-	<string name="pass_times_collapse_view_description">pass times collapse image description</string>
-	<string name="people_in_space_retry_view_description">Retry Retrieve People In Space Image Description</string>
-	<string name="toast_map_error">Sorry but there is an error loading map.</string>
+  <string name="app_name">ISS Position</string>
+  <string name="title_activity_main">ISS Position</string>
+  <string name="people_in_space_header">People In Space</string>
+  <string name="people_in_space_collapse_view_description">People In Space Collapse View</string>
+  <string name="refresh">refresh</string>
+  <string name="toast_network_error">Sorry but there is a Connection Error. Please try again.</string>
+  <string name="about">about</string>
+  <string name="about_developed_by">Developed by</string>
+  <string name="my_name"><b>Ferran Pons</b>\n<i>@ponsaffair</i></string>
+  <string name="about_project_description">This is app was created to show how to develop clean Android applications using the Model-View-Presenter pattern with RxJava, Retrolambda and Retrofit.</string>
+  <string name="about_project_url"><a href="https://github.com/ferranponsscmspain/iss-position">https://github.com/ferranponsscmspain/iss-position</a></string>
+  <string name="about_iss_image_description">ISS Image</string>
+  <string name="pass_times_header">Pass Times</string>
+  <string name="pass_times_collapse_view_description">pass times collapse image description</string>
+  <string name="people_in_space_retry_view_description">Retry Retrieve People In Space Image Description</string>
 </resources>

@@ -1,17 +1,24 @@
 buildscript {
-	repositories {
-		mavenCentral()
-		jcenter()
-	}
-	dependencies {
-		classpath 'com.android.tools.build:gradle:2.1.2'
-		classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
-	}
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:2.1.2'
+    classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
+    classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
+  }
 }
 
 allprojects {
-	repositories {
-		jcenter()
-		mavenCentral()
-	}
+  repositories {
+    jcenter()
+    mavenCentral()
+  }
+}
+
+ext {
+  travisBuild = System.getenv("TRAVIS") == "true"
+  // allows for -Dpre-dex=false to be set
+  preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 }

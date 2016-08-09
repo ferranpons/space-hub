@@ -11,6 +11,7 @@ jdk:
 env:
   global:
     - TERM=dumb
+    - DX_HEAP_SIZE=1536
 
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock

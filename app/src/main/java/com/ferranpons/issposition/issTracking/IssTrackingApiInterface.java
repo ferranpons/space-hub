@@ -1,94 +1,73 @@
 package com.ferranpons.issposition.issTracking;
 
 import com.google.gson.annotations.SerializedName;
-import java.util.ArrayList;
+import java.util.List;
 import retrofit.http.GET;
 import retrofit.http.Query;
 import rx.Observable;
 
 public interface IssTrackingApiInterface {
-	@GET("/iss-now.json")
-	Observable<CurrentPositionResponse> getCurrentPosition();
+  @GET("/iss-now.json")
+  Observable<CurrentPositionResponse> getCurrentPosition();
 
-	@GET("/iss-pass.json")
-	Observable<PassTimesResponse> getPassTimes(
-		@Query("lat") double latitude,
-		@Query("lon") double longitude);
+  @GET("/iss-pass.json")
+  Observable<PassTimesResponse> getPassTimes(@Query("lat") double latitude,
+      @Query("lon") double longitude);
 
-	@GET("/astros.json")
-	Observable<PeopleInSpaceResponse> getPeopleInSpace();
+  @GET("/astros.json")
+  Observable<PeopleInSpaceResponse> getPeopleInSpace();
 
-	class PeopleInSpaceResponse {
-		@SerializedName("message")
-		String message;
+  class PeopleInSpaceResponse {
+    @SerializedName("message") String message;
 
-		@SerializedName("number")
-		int number;
+    @SerializedName("number") int number;
 
-		@SerializedName("people")
-		ArrayList<Person> people;
-	}
+    @SerializedName("people") List<Person> people;
+  }
 
-	class Person {
-		@SerializedName("name")
-		public String name;
+  class Person {
+    @SerializedName("name") public String name;
 
-		@SerializedName("craft")
-		public String spaceCraft;
-	}
+    @SerializedName("craft") public String spaceCraft;
+  }
 
-	class CurrentPositionResponse {
-		@SerializedName("message")
-		String message;
+  class CurrentPositionResponse {
+    @SerializedName("message") String message;
 
-		@SerializedName("timestamp")
-		long timestamp;
+    @SerializedName("timestamp") long timestamp;
 
-		@SerializedName("iss_position")
-		IssPosition position;
-	}
+    @SerializedName("iss_position") IssPosition position;
+  }
 
-	class IssPosition {
-		@SerializedName("latitude")
-		public double latitude;
+  class IssPosition {
+    @SerializedName("latitude") public double latitude;
 
-		@SerializedName("longitude")
-		public double longitude;
-	}
+    @SerializedName("longitude") public double longitude;
+  }
 
-	class PassTimesResponse {
-		@SerializedName("message")
-		String message;
+  class PassTimesResponse {
+    @SerializedName("message") String message;
 
-		@SerializedName("request")
-		RequestPassTimes request;
+    @SerializedName("request") RequestPassTimes request;
 
-		@SerializedName("response")
-		ArrayList<PassTime> passTimes;
-	}
+    @SerializedName("response") List<PassTime> passTimes;
+  }
 
-	class RequestPassTimes {
-		@SerializedName("latitude")
-		double latitude;
+  class RequestPassTimes {
+    @SerializedName("latitude") double latitude;
 
-		@SerializedName("longitude")
-		double longitude;
+    @SerializedName("longitude") double longitude;
 
-		@SerializedName("altitude")
-		long altitude;
+    @SerializedName("altitude") long altitude;
 
-		@SerializedName("passes")
-		int passes;
+    @SerializedName("passes") int passes;
 
-		@SerializedName("datetime")
-		long datetime;
-	}
+    @SerializedName("datetime") long datetime;
+  }
 
-	class PassTime {
-		@SerializedName("risetime")
-		public long riseTime;
+  class PassTime {
+    @SerializedName("risetime") public long riseTime;
 
-		@SerializedName("duration")
-		public int duration;
-	}
+    @SerializedName("duration") public int duration;
+  }
 }

@@ -227,11 +227,12 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
         != PackageManager.PERMISSION_GRANTED
         && ActivityCompat.checkSelfPermission(this,
         android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-      locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
-          locationListener);
+      //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
+      //    locationListener);
     }
 
-    return locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+    //return locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+    return null;
   }
 
   @Override

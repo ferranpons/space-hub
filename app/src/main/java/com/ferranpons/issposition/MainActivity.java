@@ -221,15 +221,13 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
         != PackageManager.PERMISSION_GRANTED) {
       try {
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-      } catch (SecurityException e) {
-        e.printStackTrace();
+      } catch (SecurityException ignored) {
       }
     }
 
     try {
       return locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
     } catch (IllegalArgumentException e) {
-      e.printStackTrace();
       return null;
     }
   }

@@ -194,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
     map.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("Marker"));
   }
 
+  @SuppressWarnings("CheckStyle")
   private Location getLocation() {
     LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     Criteria criteria = new Criteria();

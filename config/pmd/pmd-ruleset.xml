@@ -100,9 +100,11 @@
   <rule ref="rulesets/java/unusedcode.xml/UnusedModifier">
     <priority>5</priority>
   </rule>
+<!-- Using RxJava we do use exceptions as Error and we don't need to do this
   <rule ref="rulesets/java/design.xml/PreserveStackTrace">
     <priority>3</priority>
   </rule>
+-->
   <rule ref="rulesets/java/optimizations.xml/UseArraysAsList">
     <priority>3</priority>
   </rule>

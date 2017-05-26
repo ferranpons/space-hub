@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
     ButterKnife.inject(this);
     flipPeopleInSpaceCollapseButton();
     flipPassTimesCollapseButton();
-    issTrackingPresenter = new IssTrackingPresenter(
-        new IssTrackingInteractor(IssTrackingApi.getIssTrackingApi("http://api.open-notify.org")));
+    issTrackingPresenter =
+        new IssTrackingPresenter(new IssTrackingInteractor(IssTrackingApi.getIssTrackingApi("http://api.open-notify.org")));
     issTrackingPresenter.setView(this);
   }
 
@@ -122,8 +122,7 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
     loadContent();
     int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
     if (status == ConnectionResult.SERVICE_MISSING) {
-      Toast.makeText(getBaseContext(), R.string.common_google_play_services_unsupported_text,
-          Toast.LENGTH_SHORT).show();
+      Toast.makeText(getBaseContext(), R.string.common_google_play_services_unsupported_text, Toast.LENGTH_SHORT).show();
     }
     connectivityChange = new ConnectivityChange();
     registerReceiver(connectivityChange, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -138,16 +137,14 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
   public void setUpMapIfNeeded() {
     Location location = getLocation();
     if (map == null) {
-      ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(
-          googleMap -> {
-            if (map != null && location != null) {
-              issTrackingPresenter.retrievePassTimes(location.getLatitude(),
-                  location.getLongitude());
-              setUpMap(location);
-            } else {
-              showPassTimesError();
-            }
-          });
+      ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(googleMap -> {
+        if (map != null && location != null) {
+          issTrackingPresenter.retrievePassTimes(location.getLatitude(), location.getLongitude());
+          setUpMap(location);
+        } else {
+          showPassTimesError();
+        }
+      });
     }
   }
 
@@ -187,20 +184,17 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
   }
 
   private void setUpMap(Location location) {
-    map.animateCamera(CameraUpdateFactory.newLatLngZoom(
-        new LatLng(location.getLatitude(), location.getLongitude()), 13));
-    CameraPosition cameraPosition = new CameraPosition.Builder().target(
-        new LatLng(location.getLatitude(), location.getLongitude()))
+    map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
+    CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude()))
         .zoom(3)
         .bearing(0)
         .tilt(40)
         .build();
     map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-    map.addMarker(
-        new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude()))
-            .title("Marker"));
+    map.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("Marker"));
   }
 
+  @SuppressWarnings("CheckStyle")
   private Location getLocation() {
     LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     Criteria criteria = new Criteria();
@@ -223,24 +217,28 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
     };
 
     // Register the listener with the Location Manager to receive location updates
-    if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-        != PackageManager.PERMISSION_GRANTED
-        && ActivityCompat.checkSelfPermission(this,
-        android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-      locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
-          locationListener);
+    if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+        != PackageManager.PERMISSION_GRANTED) {
+      try {
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+      } catch (SecurityException ignore) {
+      }
     }
 
-    return locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+    try {
+      return locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+    } catch (IllegalArgumentException e) {
+      return null;
+    }
   }
 
   @Override
   public void setIssPosition(IssTrackingApiInterface.IssPosition position) {
     if (map != null) {
-      map.addMarker(
-          new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.iss_marker))
-              .position(new LatLng(position.latitude, position.longitude))
-              .title("Marker"));
+      map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.iss_marker))
+          .position(new LatLng(position.latitude, position.longitude))
+          .title("Marker"));
     }
   }
 
@@ -320,8 +318,7 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
   private class ConnectivityChange extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-      ConnectivityManager cm =
-          (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+      ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
       NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
       boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();

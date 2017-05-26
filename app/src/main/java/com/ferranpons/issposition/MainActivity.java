@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -194,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
     map.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("Marker"));
   }
 
-  @SuppressWarnings("CheckStyle")
   private Location getLocation() {
     LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     Criteria criteria = new Criteria();
@@ -222,13 +222,15 @@ public class MainActivity extends AppCompatActivity implements IssTrackingViewIn
         != PackageManager.PERMISSION_GRANTED) {
       try {
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-      } catch (Exception ignored) {
+      } catch (SecurityException e) {
+        e.printStackTrace();
       }
     }
 
     try {
       return locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-    } catch (Exception ignored) {
+    } catch (IllegalArgumentException e) {
+      e.printStackTrace();
       return null;
     }
   }

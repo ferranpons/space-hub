@@ -70,17 +70,17 @@ class MainActivity : AppCompatActivity(), IssTrackingViewInterface {
         //flipPeopleInSpaceCollapseButton()
         //flipPassTimesCollapseButton()
         issTrackingPresenter = IssTrackingPresenter(IssTrackingInteractor(IssTrackingApi.getIssTrackingApi("http://api.open-notify.org")))
-        issTrackingPresenter!!.setView(this)
+        (issTrackingPresenter as IssTrackingPresenter).setView(this)
     }
 
     @OnClick(R.id.collapseLayout)
     fun collapsePeopleInSpaceView() {
-        if (peopleInSpaceListView!!.visibility == View.VISIBLE) {
-            peopleInSpaceListView!!.visibility = View.GONE
-            flipPeopleInSpaceCollapseButton()
+        if (peopleInSpaceListView?.visibility == View.VISIBLE) {
+            peopleInSpaceListView?.visibility = View.GONE
+            //flipPeopleInSpaceCollapseButton()
         } else {
-            peopleInSpaceListView!!.visibility = View.VISIBLE
-            flipPeopleInSpaceCollapseButton()
+            peopleInSpaceListView?.visibility = View.VISIBLE
+            //flipPeopleInSpaceCollapseButton()
         }
     }
 

@@ -86,12 +86,12 @@ class MainActivity : AppCompatActivity(), IssTrackingViewInterface {
 
     @OnClick(R.id.collapsePassTimesLayout)
     fun collapsePassTimesView() {
-        if (passTimesListView!!.visibility == View.VISIBLE) {
-            passTimesListView!!.visibility = View.GONE
-            flipPassTimesCollapseButton()
+        if (passTimesListView?.visibility == View.VISIBLE) {
+            passTimesListView?.visibility = View.GONE
+            //flipPassTimesCollapseButton()
         } else {
-            passTimesListView!!.visibility = View.VISIBLE
-            flipPassTimesCollapseButton()
+            passTimesListView?.visibility = View.VISIBLE
+            //flipPassTimesCollapseButton()
         }
     }
 

@@ -25,8 +25,8 @@ class PeopleAdapter(context: Context, people: List<IssTrackingApiInterface.Perso
         var customView = view
         if (customView == null) {
             customView = View.inflate(parent.context, R.layout.row_person, null)
-            holder = ViewHolder(customView)
-            customView!!.tag = holder
+            holder = ViewHolder(customView!!)
+            customView.tag = holder
         } else {
             holder = customView.tag as ViewHolder
         }

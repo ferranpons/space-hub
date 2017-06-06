@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tabs xmlns:android="http://schemas.android.com/apk/res/android">
   <tab
-      id="@+id/tab_favorites"
+      id="@+id/tab_schedule"
       icon="@drawable/ic_action_about"
-      title="Favorites" />
+      title="@string/bottom_bar_menu_schedule" />
   <tab
-      id="@+id/tab_nearby"
+      id="@+id/tab_iss_live"
       icon="@drawable/ic_action_refresh"
-      title="Nearby" />
+      title="@string/bottom_bar_menu_iss_live" />
   <tab
-      id="@+id/tab_friends"
-      icon="@drawable/ic_action_collapse_dark"
-      title="Friends" />
+      id="@+id/tab_upcoming_launches"
+      icon="@drawable/ic_action_about"
+      title="@string/bottom_bar_menu_upcoming_launches" />
+  <tab
+      id="@+id/tab_settings"
+      icon="@drawable/ic_action_refresh"
+      title="@string/bottom_bar_menu_settings" />
 </tabs>

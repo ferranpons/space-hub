@@ -1,21 +1,21 @@
 package com.ferranpons.issposition.issTracking;
 
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import java.util.concurrent.TimeUnit;
-import rx.Observable;
-import rx.Scheduler;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 
 public class IssTrackingPresenter implements IssTrackingPresenterInterface {
   private final IssTrackingInteractorInterface issTrackingInteractorInterface;
   private IssTrackingViewInterface view;
   private final IssTrackingViewInterface nullView = new IssTrackingViewInterface.NullView();
-  private Subscription currentPositionSubscription;
-  private Subscription passTimesSubscription;
-  private Subscription peopleInSpaceSubscription;
-  private Subscription timerSubscription;
+  private Disposable currentPositionSubscription;
+  private Disposable passTimesSubscription;
+  private Disposable peopleInSpaceSubscription;
+  private Disposable timerSubscription;
   private final Scheduler scheduler;
-  private final Observable<Long> timer = Observable.timer(60, 60, TimeUnit.SECONDS);
+  private final Observable<Long> timer = Observable.timer(60, TimeUnit.SECONDS, AndroidSchedulers.mainThread());
 
   public IssTrackingPresenter(IssTrackingInteractorInterface issTrackingInteractorInterface) {
     this(issTrackingInteractorInterface, AndroidSchedulers.mainThread());
@@ -39,7 +39,7 @@ public class IssTrackingPresenter implements IssTrackingPresenterInterface {
         .observeOn(scheduler)
         .subscribe(currentPositionResponse -> view.setIssPosition(currentPositionResponse.position),
             throwable -> view.showCurrentPositionError(), () -> {
-              if (timerSubscription == null || timerSubscription.isUnsubscribed()) {
+              if (timerSubscription == null || timerSubscription.isDisposed()) {
                 timerSubscription = timer.observeOn(scheduler)
                     .subscribe((numberOfTimes) -> retrieveCurrentPosition());
               }
@@ -68,16 +68,16 @@ public class IssTrackingPresenter implements IssTrackingPresenterInterface {
   public void stop() {
     this.view = nullView;
     if (currentPositionSubscription != null) {
-      currentPositionSubscription.unsubscribe();
+      currentPositionSubscription.dispose();
     }
     if (passTimesSubscription != null) {
-      passTimesSubscription.unsubscribe();
+      passTimesSubscription.dispose();
     }
     if (peopleInSpaceSubscription != null) {
-      peopleInSpaceSubscription.unsubscribe();
+      peopleInSpaceSubscription.dispose();
     }
     if (timerSubscription != null) {
-      timerSubscription.unsubscribe();
+      timerSubscription.dispose();
     }
   }
 }

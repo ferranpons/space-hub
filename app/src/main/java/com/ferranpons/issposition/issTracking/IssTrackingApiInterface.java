@@ -1,10 +1,10 @@
 package com.ferranpons.issposition.issTracking;
 
 import com.google.gson.annotations.SerializedName;
+import io.reactivex.Observable;
 import java.util.List;
 import retrofit.http.GET;
 import retrofit.http.Query;
-import rx.Observable;
 
 public interface IssTrackingApiInterface {
   @GET("/iss-now.json")

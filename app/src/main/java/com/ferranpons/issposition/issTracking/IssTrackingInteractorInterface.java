@@ -1,6 +1,6 @@
 package com.ferranpons.issposition.issTracking;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public interface IssTrackingInteractorInterface {
   Observable<IssTrackingApiInterface.CurrentPositionResponse> getCurrentPosition();

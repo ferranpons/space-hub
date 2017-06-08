@@ -23,9 +23,13 @@ import android.widget.*
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.ferranpons.issposition.issLive.IssLiveFragment
 import com.ferranpons.issposition.issTracking.*
 import com.ferranpons.issposition.passTimes.PassTimesAdapter
 import com.ferranpons.issposition.peopleInSpace.PeopleAdapter
+import com.ferranpons.issposition.schedule.ScheduleFragment
+import com.ferranpons.issposition.settings.SettingsFragment
+import com.ferranpons.issposition.upcomingLaunches.UpcomingLaunchesFragment
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GooglePlayServicesUtil
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -35,6 +39,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.roughike.bottombar.BottomBar
 
 class MainActivity : AppCompatActivity(), IssTrackingViewInterface {
 
@@ -71,6 +76,36 @@ class MainActivity : AppCompatActivity(), IssTrackingViewInterface {
         //flipPassTimesCollapseButton()
         issTrackingPresenter = IssTrackingPresenter(IssTrackingInteractor(IssTrackingApi.getIssTrackingApi("http://api.open-notify.org")))
         (issTrackingPresenter as IssTrackingPresenter).setView(this)
+
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        val scheduleFragment: ScheduleFragment = ScheduleFragment()
+        fragmentTransaction.replace(R.id.content_frame, scheduleFragment, scheduleFragment.tag).commit()
+
+        setupBottomBar()
+    }
+
+    private fun setupBottomBar() {
+        val bottomBar: BottomBar = this.findViewById(R.id.bottomBar) as BottomBar
+        bottomBar.setOnTabSelectListener({
+            tabId ->
+            run {
+                val fragmentTransaction = supportFragmentManager.beginTransaction()
+                if (tabId == R.id.tab_schedule) {
+                    val scheduleFragment: ScheduleFragment = ScheduleFragment()
+                    fragmentTransaction.replace(R.id.content_frame, scheduleFragment, scheduleFragment.tag)
+                } else if (tabId == R.id.tab_iss_live) {
+                    val issLiveFragment: IssLiveFragment = IssLiveFragment()
+                    fragmentTransaction.replace(R.id.content_frame, issLiveFragment, issLiveFragment.tag)
+                } else if (tabId == R.id.tab_upcoming_launches) {
+                    val upcomingLaunchesFragment: UpcomingLaunchesFragment = UpcomingLaunchesFragment()
+                    fragmentTransaction.replace(R.id.content_frame, upcomingLaunchesFragment, upcomingLaunchesFragment.tag)
+                } else if (tabId == R.id.tab_settings) {
+                    val settingsFragment: SettingsFragment = SettingsFragment()
+                    fragmentTransaction.replace(R.id.content_frame, settingsFragment, settingsFragment.tag)
+                }
+                fragmentTransaction.commit()
+            }
+        })
     }
 
     @OnClick(R.id.collapseLayout)

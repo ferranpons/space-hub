@@ -11,17 +11,21 @@ public class IssTrackingInteractor implements IssTrackingInteractorInterface {
 
   @Override
   public Observable<IssTrackingApiInterface.CurrentPositionResponse> getCurrentPosition() {
-    return api.getCurrentPosition();
+    //return api.getCurrentPosition();
+    api.notify();
+    return Observable.empty();
   }
 
   @Override
   public Observable<IssTrackingApiInterface.PassTimesResponse> getPassTimes(double latitude,
       double longitude) {
-    return api.getPassTimes(latitude, longitude);
+    //return api.getPassTimes(latitude, longitude);
+    return Observable.empty();
   }
 
   @Override
   public Observable<IssTrackingApiInterface.PeopleInSpaceResponse> getPeopleInSpace() {
-    return api.getPeopleInSpace();
+    //return api.getPeopleInSpace();
+    return Observable.empty();
   }
 }

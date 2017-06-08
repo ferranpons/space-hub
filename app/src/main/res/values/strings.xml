@@ -14,4 +14,9 @@
   <string name="pass_times_header">Pass Times</string>
   <string name="pass_times_collapse_view_description">pass times collapse image description</string>
   <string name="people_in_space_retry_view_description">Retry Retrieve People In Space Image Description</string>
+
+  <string name="bottom_bar_menu_schedule">Schedule</string>
+  <string name="bottom_bar_menu_iss_live">ISS Live</string>
+  <string name="bottom_bar_menu_upcoming_launches">Launches</string>
+  <string name="bottom_bar_menu_settings">Settings</string>
 </resources>

@@ -5,14 +5,14 @@
        android:layout_height="match_parent"
        android:orientation="vertical"
     >
-
+<!--
   <fragment
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:id="@+id/map"
       tools:context=".MainActivity"
       android:name="com.google.android.gms.maps.SupportMapFragment"
-      />
+      /> -->
 
   <FrameLayout
       android:id="@+id/content_frame"
@@ -29,14 +29,4 @@
       android:layout_alignParentBottom="true"
       app:bb_tabXmlResource="@xml/bottombar_tabs"
       />
-
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      >
-
-    <include layout="@layout/card_people_in_space"/>
-    <include layout="@layout/card_pass_times"/>
-  </LinearLayout>
 </RelativeLayout>

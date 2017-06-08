@@ -77,6 +77,10 @@ class MainActivity : AppCompatActivity(), IssTrackingViewInterface {
         issTrackingPresenter = IssTrackingPresenter(IssTrackingInteractor(IssTrackingApi.getIssTrackingApi("http://api.open-notify.org")))
         (issTrackingPresenter as IssTrackingPresenter).setView(this)
 
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        val scheduleFragment: ScheduleFragment = ScheduleFragment()
+        fragmentTransaction.replace(R.id.content_frame, scheduleFragment, scheduleFragment.tag).commit()
+
         setupBottomBar()
     }
 

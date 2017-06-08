@@ -12,6 +12,7 @@ public class IssTrackingInteractor implements IssTrackingInteractorInterface {
   @Override
   public Observable<IssTrackingApiInterface.CurrentPositionResponse> getCurrentPosition() {
     //return api.getCurrentPosition();
+    api.notify();
     return Observable.empty();
   }
 

@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 
 class SchedulePresenter(var view: ScheduleViewInterface, var useCase: PassTimesUseCase) {
 
-    var compositeDisposable: CompositeDisposable = CompositeDisposable()
+    val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     fun getPassTimesFor(latitude: Double, longitude: Double) {
         val disposable: Disposable = useCase.getPassTimes(latitude, longitude)

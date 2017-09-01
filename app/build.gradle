@@ -1,17 +1,18 @@
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-  dependencies {}
+plugins {
+  id "io.gitlab.arturbosch.detekt" version "1.0.0.M12.3"
 }
-repositories {
-  jcenter()
-}
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'me.tatarka.retrolambda'
 apply from: '../quality.gradle'
+
+detekt {
+  version = "1.0.0.M12.3"
+  profile("main") {
+    config = "$rootDir/config/detekt/detekt-config.yml"
+    output = "$project.projectDir/build/reports/detekt/detekt.xml"
+  }
+}
 
 android {
   compileSdkVersion 25
@@ -22,7 +23,7 @@ android {
     minSdkVersion 15
     targetSdkVersion 25
     versionCode 4
-    versionName "2.0"
+    versionName "1.0"
     multiDexEnabled true
   }
 

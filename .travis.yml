@@ -37,3 +37,11 @@ android:
 script:
   - ./gradlew build
   - ./gradlew detektCheck
+
+deploy:
+  - provider: script
+    script:
+      ./gradlew publishApkProRelease
+    on:
+      tags: true
+    skip_cleanup: true

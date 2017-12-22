@@ -26,13 +26,13 @@ android:
   - tools
   - tools
   - platform-tools
-  - build-tools-25.0.3
-  - android-25
+  - build-tools-27.0.2
+  - android-27
   - extra
   - extra-google-google_play_services
   - extra-google-m2repository
   - extra-android-m2repository
-  - addon-google_apis-google-25
+  - addon-google_apis-google-27
 
 script:
   - ./gradlew build

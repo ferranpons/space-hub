@@ -21,6 +21,7 @@
       android:theme="@style/AppTheme"
       android:supportsRtl="false"
       tools:ignore="GoogleAppIndexingWarning"
+      tools:replace="android:supportsRtl"
       >
     <meta-data
         android:name="com.google.android.gms.version"

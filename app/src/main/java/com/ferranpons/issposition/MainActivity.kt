@@ -9,7 +9,6 @@ import com.ferranpons.issposition.issLive.IssLiveFragment
 import com.ferranpons.issposition.schedule.ScheduleFragment
 import com.ferranpons.issposition.settings.SettingsFragment
 import com.ferranpons.issposition.upcomingLaunches.UpcomingLaunchesFragment
-import com.roughike.bottombar.BottomBar
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupBottomBar() {
-        val bottomBar: BottomBar = this.findViewById(R.id.bottomBar) as BottomBar
+        /*val bottomBar: BottomBar = this.findViewById(R.id.bottomBar) as BottomBar
         bottomBar.setOnTabSelectListener({
             tabId ->
             run {
@@ -46,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 fragmentTransaction.commit()
             }
-        })
+        })*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

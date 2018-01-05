@@ -26,14 +26,21 @@ android:
   - tools
   - tools
   - platform-tools
-  - build-tools-25.0.3
-  - android-25
+  - build-tools-27.0.3
+  - android-26
   - extra
   - extra-google-google_play_services
   - extra-google-m2repository
   - extra-android-m2repository
-  - addon-google_apis-google-25
 
 script:
   - ./gradlew build
   - ./gradlew detektCheck
+
+deploy:
+  - provider: script
+    script:
+      ./gradlew publishApkProRelease
+    on:
+      tags: true
+    skip_cleanup: true

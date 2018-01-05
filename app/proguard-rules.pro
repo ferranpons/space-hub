@@ -102,6 +102,9 @@
 -keep interface android.support.design.** { *; }
 -keep public class android.support.design.R$* { *; }
 
+-dontwarn com.ashokvarma.bottomnavigation.**
+-keep class com.ashokvarma.bottomnavigation.** { *; }
+
 # Retrofit 2.X
 ## https://square.github.io/retrofit/ ##
 

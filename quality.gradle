@@ -1,13 +1,12 @@
-apply plugin: 'pmd'
+//apply plugin: 'pmd'
 apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
 
 def isTravis = "true".equals(System.getenv("TRAVIS"))
 
-pmd {
+/*pmd {
   ruleSetFiles = files("${project.rootDir}/config/pmd/pmd-ruleset.xml")
-}
-
+}*/
 findbugs {
   includeFilter = file("${project.rootDir}/config/findbugs/findbugs-config.xml")
   excludeFilter = file("${project.rootDir}/config/findbugs/findbugs-excludes.xml")

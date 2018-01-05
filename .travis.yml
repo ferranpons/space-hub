@@ -27,12 +27,11 @@ android:
   - tools
   - platform-tools
   - build-tools-27.0.3
-  - android-27
+  - android-26
   - extra
   - extra-google-google_play_services
   - extra-google-m2repository
   - extra-android-m2repository
-  - addon-google_apis-google-27
 
 script:
   - ./gradlew build

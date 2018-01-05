@@ -33,6 +33,9 @@ android:
   - extra-google-m2repository
   - extra-android-m2repository
 
+before_install:
+  - yes | sdkmanager "platforms;android-27"
+
 script:
   - ./gradlew build
   - ./gradlew detektCheck

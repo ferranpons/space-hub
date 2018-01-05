@@ -67,4 +67,4 @@ task checkstyle(type: Checkstyle) {
   classpath = files()
 }
 
-check.dependsOn 'checkstyle', 'findbugs', 'pmd', 'lint'
+check.dependsOn 'checkstyle', 'findbugs', 'lint'

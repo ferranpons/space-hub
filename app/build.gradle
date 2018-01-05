@@ -5,6 +5,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.github.triplet.play'
 apply from: '../quality.gradle'
+apply plugin: 'kotlin-kapt'
 
 detekt {
   version = "1.0.0.M12.3"

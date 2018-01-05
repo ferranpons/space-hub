@@ -70,7 +70,7 @@ dependencies {
 
   def butterKnife = '8.8.1'
   implementation "com.jakewharton:butterknife:$butterKnife"
-  annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnife"
+  kapt "com.jakewharton:butterknife-compiler:$butterKnife"
 
   implementation 'net.danlew:android.joda:2.7.2'
 

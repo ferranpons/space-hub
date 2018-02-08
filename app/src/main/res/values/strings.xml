@@ -19,4 +19,9 @@
   <string name="bottom_bar_menu_iss_live">ISS Live</string>
   <string name="bottom_bar_menu_upcoming_launches">Launches</string>
   <string name="bottom_bar_menu_settings">Settings</string>
+    <string name="iss_schedule_bottom_bar_button">Schedule</string>
+  <string name="iss_live_bottom_bar_button">ISS Live</string>
+  <string name="upcoming_launches_bottom_bar_button">Upcoming Launches</string>
+  <string name="nasa_news_bottom_bar_button">News</string>
+  <string name="settings_bottom_bar_button">Settings</string>
 </resources>

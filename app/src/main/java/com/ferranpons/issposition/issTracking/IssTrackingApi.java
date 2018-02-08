@@ -1,10 +1,16 @@
 package com.ferranpons.issposition.issTracking;
 
-import retrofit.RestAdapter;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class IssTrackingApi {
   public static IssTrackingApiInterface getIssTrackingApi(String endPoint) {
-    RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(endPoint).build();
+    Retrofit restAdapter = new Retrofit.Builder()
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(endPoint)
+            .build();
 
     return restAdapter.create(IssTrackingApiInterface.class);
   }

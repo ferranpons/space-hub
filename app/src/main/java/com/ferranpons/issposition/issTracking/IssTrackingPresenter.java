@@ -5,6 +5,8 @@ import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 import java.util.concurrent.TimeUnit;
 
 public class IssTrackingPresenter implements IssTrackingPresenterInterface {
@@ -34,6 +36,7 @@ public class IssTrackingPresenter implements IssTrackingPresenterInterface {
   @Override
   public void retrieveCurrentPosition() {
     Disposable currentPositionSubscription = issTrackingInteractorInterface.getCurrentPosition()
+        .subscribeOn(Schedulers.io())
         .observeOn(scheduler)
         .subscribe(currentPositionResponse -> view.setIssPosition(currentPositionResponse.position),
             throwable -> view.showCurrentPositionError(), () -> {
@@ -50,6 +53,7 @@ public class IssTrackingPresenter implements IssTrackingPresenterInterface {
   public void retrievePassTimes(double latitude, double longitude) {
     view.willRetrievePassTimes();
     Disposable passTimesSubscription = issTrackingInteractorInterface.getPassTimes(latitude, longitude)
+        .subscribeOn(Schedulers.io())
         .observeOn(scheduler)
         .subscribe(passTimesResponse -> view.showPassTimes(passTimesResponse.passTimes),
             throwable -> view.showPassTimesError(), view::didRetrievePassTimes);
@@ -60,6 +64,7 @@ public class IssTrackingPresenter implements IssTrackingPresenterInterface {
   public void retrievePeopleInSpace() {
     view.willRetrievePeopleInSpace();
     Disposable peopleInSpaceSubscription = issTrackingInteractorInterface.getPeopleInSpace()
+        .subscribeOn(Schedulers.io())
         .observeOn(scheduler)
         .subscribe(peopleInSpaceResponse -> view.showPeopleInSpace(peopleInSpaceResponse.people),
             throwable -> view.showPeopleInSpaceError(), view::didRetrievePeopleInSpace);

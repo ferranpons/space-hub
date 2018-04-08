@@ -15,14 +15,11 @@ local.properties
 project.properties
 
 .idea/.name
-.idea/*.xml
 .idea/dataSources.ids
-.idea/libraries/
 .idea/scopes/
-.idea/copyright/
 .idea/dictionaries/
-.idea/inspectionProfiles/
 .gradle/
+.idea/
 .metadata/
 *.iml
 *.jks

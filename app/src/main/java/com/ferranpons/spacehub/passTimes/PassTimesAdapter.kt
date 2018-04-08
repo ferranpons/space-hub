@@ -18,7 +18,6 @@ class PassTimesAdapter(context: Context, passTimes: List<IssTrackingApiInterface
     class ViewHolder(view: View) {
         internal var riseTime: TextView = view.findViewById(R.id.riseTime) as TextView
         internal var duration: TextView = view.findViewById(R.id.duration) as TextView
-
     }
 
     @TargetApi(24)

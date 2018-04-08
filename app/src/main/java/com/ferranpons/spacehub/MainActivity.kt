@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
                 .addItem(BottomNavigationItem(R.drawable.ic_action_refresh_dark, getString(R.string.settings_bottom_bar_button)))
                 .initialise()
 
-
         bottomNavigationBar.setTabSelectedListener(object : BottomNavigationBar.OnTabSelectedListener {
             override fun onTabSelected(position: Int) {
                 val fragmentTransaction = supportFragmentManager.beginTransaction()

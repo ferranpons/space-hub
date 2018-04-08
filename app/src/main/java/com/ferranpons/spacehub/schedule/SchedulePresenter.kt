@@ -6,7 +6,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
-
 class SchedulePresenter(var view: ScheduleViewInterface, var useCase: PassTimesUseCase) {
 
     val compositeDisposable: CompositeDisposable = CompositeDisposable()

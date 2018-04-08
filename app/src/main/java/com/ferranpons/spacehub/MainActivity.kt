@@ -31,11 +31,11 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationBar = findViewById<View>(R.id.bottom_navigation_bar) as BottomNavigationBar
 
         bottomNavigationBar
-                .addItem(BottomNavigationItem(R.drawable.ic_action_refresh, getString(R.string.iss_schedule_bottom_bar_button)))
-                .addItem(BottomNavigationItem(R.drawable.ic_action_about, getString(R.string.iss_live_bottom_bar_button)))
-                .addItem(BottomNavigationItem(R.drawable.ic_action_collapse_dark, getString(R.string.upcoming_launches_bottom_bar_button)))
-                .addItem(BottomNavigationItem(R.drawable.ic_action_collapse_dark, getString(R.string.nasa_news_bottom_bar_button)))
-                .addItem(BottomNavigationItem(R.drawable.ic_action_refresh_dark, getString(R.string.settings_bottom_bar_button)))
+                .addItem(BottomNavigationItem(R.drawable.ic_date_range_black_24dp, getString(R.string.iss_schedule_bottom_bar_button)))
+                .addItem(BottomNavigationItem(R.drawable.ic_live_tv_black_24dp, getString(R.string.iss_live_bottom_bar_button)))
+                .addItem(BottomNavigationItem(R.drawable.ic_flight_takeoff_black_24dp, getString(R.string.upcoming_launches_bottom_bar_button)))
+                .addItem(BottomNavigationItem(R.drawable.ic_rss_feed_black_24dp, getString(R.string.nasa_news_bottom_bar_button)))
+                .addItem(BottomNavigationItem(R.drawable.ic_settings_black_24dp, getString(R.string.settings_bottom_bar_button)))
                 .initialise()
 
         bottomNavigationBar.setTabSelectedListener(object : BottomNavigationBar.OnTabSelectedListener {

@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.ferranpons.spacehub.R
 
-
 class UpcomingLaunchesFragment : Fragment() {
 
     override fun onAttach(context: Context?) {

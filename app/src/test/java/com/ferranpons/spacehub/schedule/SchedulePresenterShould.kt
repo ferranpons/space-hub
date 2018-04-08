@@ -2,8 +2,6 @@ package com.ferranpons.spacehub.schedule
 
 import org.junit.Test
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
-
 
 class SchedulePresenterShould {
 
@@ -18,5 +16,4 @@ class SchedulePresenterShould {
 
         verify(scheduleView).showPassTimes(emptyList())*/
     }
-
 }

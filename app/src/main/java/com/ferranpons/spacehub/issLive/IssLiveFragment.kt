@@ -8,8 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.ferranpons.spacehub.R
 
-
-class IssLiveFragment: Fragment() {
+class IssLiveFragment : Fragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

@@ -1,6 +1,6 @@
 <resources>
   <string name="app_name">Space Hub</string>
-  <string name="title_activity_main">ISS Position</string>
+  <string name="title_activity_main">Space Hub</string>
   <string name="people_in_space_header">People In Space</string>
   <string name="people_in_space_collapse_view_description">People In Space Collapse View</string>
   <string name="refresh">refresh</string>

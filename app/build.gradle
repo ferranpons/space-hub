@@ -1,5 +1,5 @@
 plugins {
-  id "io.gitlab.arturbosch.detekt" version "1.0.0.RC6-4"
+    id "io.gitlab.arturbosch.detekt" version "1.0.0.RC6-4"
 }
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
@@ -9,90 +9,95 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "org.jlleitschuh.gradle.ktlint"
 
 detekt {
-  version = "1.0.0.RC6-4"
-  profile("main") {
-    config = "$rootDir/config/detekt/detekt-config.yml"
-    output = "$project.projectDir/build/reports/detekt/detekt.xml"
-  }
+    version = "1.0.0.RC6-4"
+    profile("main") {
+        config = "$rootDir/config/detekt/detekt-config.yml"
+        output = "$project.projectDir/build/reports/detekt/detekt.xml"
+    }
 }
 
 android {
-  compileSdkVersion 27
+    compileSdkVersion 27
 
-  defaultConfig {
-    applicationId "com.ferranpons.spacehub"
-    minSdkVersion 17
-    targetSdkVersion 27
-    versionCode 4
-    versionName "1.0"
-    multiDexEnabled true
-  }
-
-  buildTypes {
-    release {
-      minifyEnabled true
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    defaultConfig {
+        applicationId "com.ferranpons.spacehub"
+        minSdkVersion 17
+        targetSdkVersion 27
+        versionCode 4
+        versionName "1.0"
+        multiDexEnabled true
     }
-  }
 
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
-  }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
 
-  dexOptions {
-    javaMaxHeapSize "4g"
-    preDexLibraries = preDexEnabled && !travisBuild
-  }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
-  lintOptions {
-    abortOnError false
-    disable 'IconMissingDensityFolder'
-  }
+    dexOptions {
+        javaMaxHeapSize "4g"
+        preDexLibraries = preDexEnabled && !travisBuild
+    }
+
+    lintOptions {
+        abortOnError false
+        disable 'IconMissingDensityFolder'
+    }
 }
 
 dependencies {
-  implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-  implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.android.support:multidex:1.0.3'
 
-  def supportLibraryVersion = '27.1.1'
-  implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
-  implementation "com.android.support:design:${supportLibraryVersion}"
-  implementation "com.android.support:cardview-v7:$supportLibraryVersion"
-  implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
-  implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    def supportLibraryVersion = '27.1.1'
+    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+    implementation "com.android.support:design:${supportLibraryVersion}"
+    implementation "com.android.support:cardview-v7:$supportLibraryVersion"
+    implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
-  implementation 'com.google.android.gms:play-services-maps:12.0.1'
+    def playServicesVersion = '12.0.1'
+    implementation "com.google.android.gms:play-services-maps:$playServicesVersion"
+    implementation "com.google.firebase:firebase-crash:$playServicesVersion"
+    implementation "com.google.firebase:firebase-core:$playServicesVersion"
 
-  implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-  implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
 
-  implementation ('com.schibstedspain.android:leku:4.0.1') {
-    exclude group: 'com.google.android.gms'
-    exclude group: 'com.android.support'
-  }
+    implementation('com.schibstedspain.android:leku:4.0.1') {
+        exclude group: 'com.google.android.gms'
+        exclude group: 'com.android.support'
+    }
 
-  def butterKnife = '8.8.1'
-  implementation "com.jakewharton:butterknife:$butterKnife"
-  kapt "com.jakewharton:butterknife-compiler:$butterKnife"
+    def butterKnife = '8.8.1'
+    implementation "com.jakewharton:butterknife:$butterKnife"
+    kapt "com.jakewharton:butterknife-compiler:$butterKnife"
 
-  implementation 'net.danlew:android.joda:2.9.9.1'
+    implementation 'net.danlew:android.joda:2.9.9.1'
 
-  def retrofitVersion = '2.3.0'
-  implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-  implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
-  implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    def retrofitVersion = '2.3.0'
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
-  implementation 'io.swagger:swagger-annotations:1.5.17'
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation 'io.swagger:swagger-annotations:1.5.17'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
-  implementation ("com.ashokvarma.android:bottom-navigation-bar:2.0.4") {
-    exclude group: 'com.android.support'
-  }
+    implementation("com.ashokvarma.android:bottom-navigation-bar:2.0.4") {
+        exclude group: 'com.android.support'
+    }
 
-  implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.2'
 
-  testImplementation 'org.mockito:mockito-core:2.12.0'
-  testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.12.0'
+    testImplementation 'junit:junit:4.12'
 }
+
+apply plugin: 'com.google.gms.google-services'

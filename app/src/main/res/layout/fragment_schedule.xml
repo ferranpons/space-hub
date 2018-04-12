@@ -39,8 +39,6 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/loading_custom_view"/>
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_container"
         android:layout_width="match_parent"
@@ -99,5 +97,7 @@
         app:layout_anchorGravity="top|center"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         />
+
+    <include layout="@layout/loading_custom_view"/>
 
 </android.support.design.widget.CoordinatorLayout>

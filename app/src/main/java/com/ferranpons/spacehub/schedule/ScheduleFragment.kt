@@ -17,16 +17,19 @@ class ScheduleFragment : Fragment(), IssTrackingViewInterface {
     private lateinit var issTrackingPresenter: IssTrackingPresenterInterface
     private lateinit var recyclerView: RecyclerView
 
+    companion object {
+        const val OPEN_NOTIFY_API = "http://api.open-notify.org"
+    }
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        issTrackingPresenter = IssTrackingPresenter(IssTrackingInteractor(IssTrackingApi.getIssTrackingApi("http://api.open-notify.org")))
+        issTrackingPresenter = IssTrackingPresenter(IssTrackingInteractor(IssTrackingApi.getIssTrackingApi(OPEN_NOTIFY_API)))
         (issTrackingPresenter as IssTrackingPresenter).setView(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_schedule, container, false)
-        return view
+        return inflater.inflate(R.layout.fragment_schedule, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

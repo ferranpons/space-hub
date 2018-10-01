@@ -10,7 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ferranpons.spacehub.R
-import com.ferranpons.spacehub.issTracking.*
+import com.ferranpons.spacehub.issTracking.IssTrackingApi
+import com.ferranpons.spacehub.issTracking.IssTrackingApiInterface
+import com.ferranpons.spacehub.issTracking.IssTrackingInteractor
+import com.ferranpons.spacehub.issTracking.IssTrackingPresenter
+import com.ferranpons.spacehub.issTracking.IssTrackingPresenterInterface
+import com.ferranpons.spacehub.issTracking.IssTrackingViewInterface
 import com.ferranpons.spacehub.passTimes.PassTimesAdapter
 
 class ScheduleFragment : Fragment(), IssTrackingViewInterface {

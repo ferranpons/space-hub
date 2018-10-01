@@ -1,16 +1,11 @@
 package com.ferranpons.spacehub.passTimes
 
-import android.content.Context
-import android.icu.text.SimpleDateFormat
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.ferranpons.spacehub.R
 import com.ferranpons.spacehub.issTracking.IssTrackingApiInterface
-import org.joda.time.DateTime
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 class PassTimesAdapter(private val passTimes: List<IssTrackingApiInterface.PassTime>) : RecyclerView.Adapter<PassTimesAdapter.PassTimesViewHolder>() {

@@ -17,15 +17,15 @@ buildscript {
 }
 
 allprojects {
-  repositories {
-    jcenter()
-    mavenCentral()
-    google()
-  }
+    repositories {
+        jcenter()
+        mavenCentral()
+        google()
+    }
 }
 
 ext {
-  travisBuild = System.getenv("TRAVIS") == "true"
-  // allows for -Dpre-dex=false to be set
-  preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+    travisBuild = System.getenv("TRAVIS") == "true"
+    // allows for -Dpre-dex=false to be set
+    preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 }

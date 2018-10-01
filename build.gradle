@@ -13,19 +13,20 @@ buildscript {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     classpath 'com.github.triplet.gradle:play-publisher:1.2.0'
     classpath "gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:4.1.0"
+    //classpath 'com.google.gms:google-services:4.0.1'
   }
 }
 
 allprojects {
-  repositories {
-    jcenter()
-    mavenCentral()
-    google()
-  }
+    repositories {
+        jcenter()
+        mavenCentral()
+        google()
+    }
 }
 
 ext {
-  travisBuild = System.getenv("TRAVIS") == "true"
-  // allows for -Dpre-dex=false to be set
-  preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+    travisBuild = System.getenv("TRAVIS") == "true"
+    // allows for -Dpre-dex=false to be set
+    preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 }

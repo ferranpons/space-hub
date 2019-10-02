@@ -1,7 +1,7 @@
 package com.ferranpons.spacehub
 
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
+import androidx.fragment.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +14,7 @@ class AboutFragment : DialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_about, container)
+        val view = inflater.inflate(R.layout.fragment_about, container)
         /*val projectUrl = view.findViewById(R.id.projectUrl) as TextView
         projectUrl.setOnClickListener { view1 ->
             if (activity != null) {

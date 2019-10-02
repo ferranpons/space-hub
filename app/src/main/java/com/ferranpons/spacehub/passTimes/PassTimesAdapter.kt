@@ -21,7 +21,7 @@ class PassTimesAdapter(context: Context, passTimes: List<IssTrackingApiInterface
     }
 
     @TargetApi(24)
-    override fun getView(position: Int, view: View?, parent: ViewGroup): View? {
+    override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val holder: ViewHolder
         var customView = view
         if (view == null) {
@@ -55,6 +55,6 @@ class PassTimesAdapter(context: Context, passTimes: List<IssTrackingApiInterface
             }
             holder.duration.text = durationTime
         }
-        return customView
+        return customView!!
     }
 }

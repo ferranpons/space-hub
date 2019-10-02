@@ -13,7 +13,7 @@
   <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY"/>
 
   <application
-      android:name="android.support.multidex.MultiDexApplication"
+      android:name="androidx.multidex.MultiDexApplication"
       android:allowBackup="true"
       android:fullBackupContent="true"
       android:icon="@mipmap/ic_launcher"

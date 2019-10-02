@@ -1,11 +1,10 @@
 package com.ferranpons.spacehub
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import butterknife.ButterKnife
 import com.ferranpons.spacehub.issLive.IssLiveFragment
 import com.ferranpons.spacehub.schedule.ScheduleFragment
 import com.ferranpons.spacehub.settings.SettingsFragment
@@ -18,7 +17,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ButterKnife.bind(this)
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         val scheduleFragment = ScheduleFragment()

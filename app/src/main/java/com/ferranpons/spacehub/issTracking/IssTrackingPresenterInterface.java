@@ -7,7 +7,7 @@ public interface IssTrackingPresenterInterface {
 
   void retrievePeopleInSpace();
 
-  void setView(IssTrackingViewInterface view);
+  void setView(IssTrackingView view);
 
   void stop();
 }

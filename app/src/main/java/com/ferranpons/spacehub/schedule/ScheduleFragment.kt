@@ -10,23 +10,26 @@ import com.ferranpons.spacehub.R
 import com.ferranpons.spacehub.issTracking.IssTrackingApi
 import com.ferranpons.spacehub.issTracking.IssTrackingApiInterface
 import com.ferranpons.spacehub.issTracking.IssTrackingPresenterInterface
-import com.ferranpons.spacehub.issTracking.IssTrackingViewInterface
+import com.ferranpons.spacehub.issTracking.IssTrackingView
 import com.ferranpons.spacehub.issTracking.IssTrackingPresenter
-import com.ferranpons.spacehub.issTracking.IssTrackingInteractor
+import com.ferranpons.spacehub.issTracking.IssTrackingRepository
 
-class ScheduleFragment : Fragment(), IssTrackingViewInterface {
+class ScheduleFragment : Fragment(), IssTrackingView {
     private lateinit var issTrackingPresenter: IssTrackingPresenterInterface
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        issTrackingPresenter = IssTrackingPresenter(IssTrackingInteractor(IssTrackingApi.getIssTrackingApi("http://api.open-notify.org")))
+        issTrackingPresenter = IssTrackingPresenter(
+            IssTrackingRepository(
+                IssTrackingApi.getIssTrackingApi("http://api.open-notify.org")
+            )
+        )
         (issTrackingPresenter as IssTrackingPresenter).setView(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_schedule, container, false)
-        return view
+        return inflater.inflate(R.layout.fragment_schedule, container, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

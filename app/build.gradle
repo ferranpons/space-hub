@@ -67,7 +67,7 @@ dependencies {
 
   implementation 'net.danlew:android.joda:2.10.2'
 
-  def retrofitVersion = '2.3.0'
+  def retrofitVersion = '2.9.0'
   implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
   implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
   implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"

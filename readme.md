@@ -34,7 +34,7 @@ This is a project to show how to develop clean Android applications using the Mo
 
 ### Download
 
-Will we available for download on the Google Play store anytime soon.
+WIP
 
 
 Who made this
@@ -44,7 +44,7 @@ Who made this
 |---
 | [Ferran Pons](https://github.com/ferranpons)
 
-Hi! I'm Ferran Pons; a Senior Android Developer that works for Schibsted Spain developing the Vibbo application. With almost 12 years of experience as a programmer, my experience covers a lot of different kind of applications, from web app development to the desktop, mobile apps and videogames. I've participated in some blockbuster games such as Burnout Paradise, DeadSpace and the Skate franchise. Also I've tried to start up my own indie videogame studio, labeled "Retrowax Games" with which I've made this game that it's published for the Xbox360 and Windows Phone and PC Windows.
+Hi! I'm Ferran Pons; a Senior Android Developer that works for Adevinta Spain. With almost 15 years of experience as a programmer, my experience covers a lot of different kind of applications, from web app development to the desktop, mobile apps and videogames. I've participated in some blockbuster games such as Burnout Paradise, DeadSpace and the Skate franchise. Also I'm the owner of "Retrowax Games", an independent videogame studio, with which I've made this game that was published for the Xbox360 and Windows Phone and PC Windows.
 
 
 Bugs and Feedback
@@ -57,7 +57,7 @@ Licensing
 ---------
 
 
-Copyright 2016 Ferran Pons
+Copyright 2016-2021 Ferran Pons
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

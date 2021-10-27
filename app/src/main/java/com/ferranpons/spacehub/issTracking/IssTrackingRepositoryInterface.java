@@ -2,7 +2,7 @@ package com.ferranpons.spacehub.issTracking;
 
 import io.reactivex.Observable;
 
-public interface IssTrackingInteractorInterface {
+public interface IssTrackingRepositoryInterface {
   Observable<IssTrackingApiInterface.CurrentPositionResponse> getCurrentPosition();
 
   Observable<IssTrackingApiInterface.PassTimesResponse> getPassTimes(double latitude,

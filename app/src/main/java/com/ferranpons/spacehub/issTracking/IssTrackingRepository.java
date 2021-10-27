@@ -2,10 +2,10 @@ package com.ferranpons.spacehub.issTracking;
 
 import io.reactivex.Observable;
 
-public class IssTrackingInteractor implements IssTrackingInteractorInterface {
+public class IssTrackingRepository implements IssTrackingRepositoryInterface {
   private final IssTrackingApiInterface api;
 
-  public IssTrackingInteractor(IssTrackingApiInterface api) {
+  public IssTrackingRepository(IssTrackingApiInterface api) {
     this.api = api;
   }
 

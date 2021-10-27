@@ -10,32 +10,32 @@ import io.reactivex.schedulers.Schedulers;
 import java.util.concurrent.TimeUnit;
 
 public class IssTrackingPresenter implements IssTrackingPresenterInterface {
-  private final IssTrackingInteractorInterface issTrackingInteractorInterface;
-  private IssTrackingViewInterface view;
-  private final IssTrackingViewInterface nullView = new IssTrackingViewInterface.NullView();
+  private final IssTrackingRepositoryInterface issTrackingRepositoryInterface;
+  private IssTrackingView view;
+  private final IssTrackingView nullView = new IssTrackingView.NullView();
   private Disposable timerSubscription;
-  private CompositeDisposable compositeDisposable = new CompositeDisposable();
+  private final CompositeDisposable compositeDisposable = new CompositeDisposable();
   private final Scheduler scheduler;
   private final Observable<Long> timer = Observable.timer(60, TimeUnit.SECONDS, AndroidSchedulers.mainThread());
 
-  public IssTrackingPresenter(IssTrackingInteractorInterface issTrackingInteractorInterface) {
-    this(issTrackingInteractorInterface, AndroidSchedulers.mainThread());
+  public IssTrackingPresenter(IssTrackingRepositoryInterface issTrackingRepositoryInterface) {
+    this(issTrackingRepositoryInterface, AndroidSchedulers.mainThread());
   }
 
-  private IssTrackingPresenter(IssTrackingInteractorInterface issTrackingInteractorInterface, Scheduler scheduler) {
-    this.issTrackingInteractorInterface = issTrackingInteractorInterface;
+  private IssTrackingPresenter(IssTrackingRepositoryInterface issTrackingRepositoryInterface, Scheduler scheduler) {
+    this.issTrackingRepositoryInterface = issTrackingRepositoryInterface;
     this.view = nullView;
     this.scheduler = scheduler;
   }
 
   @Override
-  public void setView(IssTrackingViewInterface view) {
+  public void setView(IssTrackingView view) {
     this.view = view;
   }
 
   @Override
   public void retrieveCurrentPosition() {
-    Disposable currentPositionSubscription = issTrackingInteractorInterface.getCurrentPosition()
+    Disposable currentPositionSubscription = issTrackingRepositoryInterface.getCurrentPosition()
         .subscribeOn(Schedulers.io())
         .observeOn(scheduler)
         .subscribe(currentPositionResponse -> view.setIssPosition(currentPositionResponse.position),
@@ -52,7 +52,7 @@ public class IssTrackingPresenter implements IssTrackingPresenterInterface {
   @Override
   public void retrievePassTimes(double latitude, double longitude) {
     view.willRetrievePassTimes();
-    Disposable passTimesSubscription = issTrackingInteractorInterface.getPassTimes(latitude, longitude)
+    Disposable passTimesSubscription = issTrackingRepositoryInterface.getPassTimes(latitude, longitude)
         .subscribeOn(Schedulers.io())
         .observeOn(scheduler)
         .subscribe(passTimesResponse -> view.showPassTimes(passTimesResponse.passTimes),
@@ -63,7 +63,7 @@ public class IssTrackingPresenter implements IssTrackingPresenterInterface {
   @Override
   public void retrievePeopleInSpace() {
     view.willRetrievePeopleInSpace();
-    Disposable peopleInSpaceSubscription = issTrackingInteractorInterface.getPeopleInSpace()
+    Disposable peopleInSpaceSubscription = issTrackingRepositoryInterface.getPeopleInSpace()
         .subscribeOn(Schedulers.io())
         .observeOn(scheduler)
         .subscribe(peopleInSpaceResponse -> view.showPeopleInSpace(peopleInSpaceResponse.people),

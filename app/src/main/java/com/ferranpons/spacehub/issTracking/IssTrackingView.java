@@ -2,7 +2,7 @@ package com.ferranpons.spacehub.issTracking;
 
 import java.util.List;
 
-public interface IssTrackingViewInterface {
+public interface IssTrackingView {
 
   void showCurrentPositionError();
 
@@ -24,7 +24,7 @@ public interface IssTrackingViewInterface {
 
   void showPeopleInSpace(List<IssTrackingApiInterface.Person> people);
 
-  class NullView implements IssTrackingViewInterface {
+  class NullView implements IssTrackingView {
 
     @Override
     public void showCurrentPositionError() {
